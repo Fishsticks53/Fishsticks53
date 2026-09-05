@@ -14,7 +14,7 @@ graph appears as a second, separate graphic within the README body.
 - Hover interactivity on individual bars (not possible — `<img>`-embedded SVGs disable
   interactivity, and GitHub's README sanitizer strips `<script>`/event handlers from
   inline SVG).
-- Exact-count tooltips or axis labels — this is a decorative graphic, not a data tool.
+- Exact-count tooltips or per-bar axis labels — this stays a decorative graphic, not a data tool. (Amended: a single aggregate label — total contributions — is in scope; see "Total-count label" below.)
 
 ## Data source
 
@@ -69,6 +69,22 @@ static generated graphic rather than an interactive page):
   set to start only after the grow-in's total duration elapses, so it reads as one
   choreographed sequence (build → glow) rather than two independent animations
   running from frame one.
+- **Idle bob (amended after initial ship):** the grow-in used the combined `transform:
+  scaleY()` property, which cannot run alongside a second, independent, infinite
+  animation on the same property without one overriding the other. Switched to the
+  individual `scale` and `translate` CSS properties instead — `scale` handles the
+  one-time grow-in, `translate` handles a continuous idle bob (~2px, ~2.5s ease-in-out
+  loop) that starts the moment each bar's own grow-in finishes, so the graphic keeps a
+  small amount of motion indefinitely instead of freezing once the entrance completes.
+
+## Total-count label
+
+A single `<text>` element, centered above the grid, reading `"<N> contributions in the
+last year"` where `<N>` is the sum of all `contributionCount` values in the input.
+Gives the viewer one concrete number to relate the bar heights to, without turning the
+graphic into a real data tool (no per-bar values, no axis, no tooltips — see amended
+Non-goals above). Adds `LABEL_MARGIN` (20px) of top padding to the SVG's height so the
+label doesn't overlap the tallest bars.
 
 ## Components
 

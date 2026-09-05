@@ -87,7 +87,9 @@ function renderBar(level, col, row, totalGrowDuration) {
   const { x, y } = isoProject(col, row);
   // Shift y-coordinates up by MAX_BAR_HEIGHT to ensure no bar's top face goes negative
   const { top, left, right, topColor, leftColor, rightColor } = barPolygons(x, y + MAX_BAR_HEIGHT, level);
-  const delay = (col * 0.02).toFixed(2);
+  const growDelay = col * 0.02;
+  // Each bar starts its idle bob the moment its own grow-in finishes.
+  const bobDelay = growDelay + 0.4;
 
   const glow = level === 4
     ? `<polygon points="${top}" fill="${topColor}" filter="url(#glow)" class="glow-bar" style="animation-delay:${totalGrowDuration.toFixed(2)}s"/>`
@@ -102,16 +104,19 @@ function renderBar(level, col, row, totalGrowDuration) {
   // Locked spec: level 4 gets a cyan rim-light outline on the top face.
   const rimStroke = level === 4 ? ' stroke="#00e5ff" stroke-width="0.5" stroke-opacity="0.7"' : '';
 
-  return `<g class="bar" style="animation-delay:${delay}s">
+  return `<g class="bar" style="animation-delay:${growDelay.toFixed(2)}s, ${bobDelay.toFixed(2)}s">
     ${sideFaces}
     <polygon points="${top}" fill="${topColor}"${rimStroke}/>
     ${glow}
   </g>`;
 }
 
+const LABEL_MARGIN = 20; // px reserved at the top for the total-count label
+
 export function renderSVG(days) {
   const counts = days.map((d) => d.contributionCount);
   const levels = bucketLevels(counts);
+  const total = counts.reduce((sum, c) => sum + c, 0);
 
   const cols = 53;
   const rows = 7;
@@ -126,9 +131,9 @@ export function renderSVG(days) {
   }).join('\n');
 
   const width = isoProject(cols, 0).x - isoProject(0, rows).x + TILE_W * 2;
-  const height = isoProject(cols, rows).y + TILE_H * 4 + MAX_BAR_HEIGHT;
+  const height = isoProject(cols, rows).y + TILE_H * 4 + MAX_BAR_HEIGHT + LABEL_MARGIN;
   const offsetX = isoProject(0, rows).x * -1 + TILE_W;
-  const offsetY = TILE_H;
+  const offsetY = TILE_H + LABEL_MARGIN;
 
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width.toFixed(0)} ${height.toFixed(0)}">
   <defs>
@@ -146,13 +151,22 @@ export function renderSVG(days) {
       </feMerge>
     </filter>
     <style>
-      .bar { opacity: 0; animation: grow-in 0.4s ease-out forwards; transform-box: fill-box; transform-origin: bottom; }
-      @keyframes grow-in { from { opacity: 0; transform: scaleY(0); } to { opacity: 1; transform: scaleY(1); } }
+      .bar {
+        opacity: 0;
+        scale: 1 0;
+        animation: grow-in 0.4s ease-out forwards, bob 2.5s ease-in-out infinite;
+        transform-box: fill-box;
+        transform-origin: bottom;
+      }
+      @keyframes grow-in { from { opacity: 0; scale: 1 0; } to { opacity: 1; scale: 1 1; } }
+      @keyframes bob { 0%, 100% { translate: 0 0; } 50% { translate: 0 -2px; } }
       .glow-bar { opacity: 0; animation: pulse 2.4s ease-in-out infinite; }
       @keyframes pulse { 0%, 100% { opacity: 0.3; } 50% { opacity: 0.9; } }
+      .total-count { font: 600 11px system-ui, -apple-system, "Segoe UI", sans-serif; fill: #b9c3e8; }
     </style>
   </defs>
   <rect x="0" y="0" width="${width.toFixed(0)}" height="${height.toFixed(0)}" fill="url(#bg)"/>
+  <text x="${(width / 2).toFixed(0)}" y="14" text-anchor="middle" class="total-count">${total} contributions in the last year</text>
   <g transform="translate(${offsetX.toFixed(2)}, ${offsetY.toFixed(2)})">
     ${bars}
   </g>

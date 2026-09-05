@@ -62,6 +62,13 @@ import { renderSVG } from './render-isometric.mjs';
     }
   }
 
+  // Verify the total-contributions label matches the sum of the input counts
+  const expectedTotal = days.reduce((sum, d) => sum + d.contributionCount, 0);
+  assert.ok(
+    svg.includes(`>${expectedTotal} contributions in the last year<`),
+    `expected total-count label for ${expectedTotal}, not found in SVG`
+  );
+
   console.log('renderSVG: PASS');
 }
 
