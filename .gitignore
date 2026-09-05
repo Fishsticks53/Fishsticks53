@@ -1,0 +1,5 @@
+# Git worktrees created by Claude Code — never commit a nested checkout
+.claude/worktrees/
+
+# Node
+node_modules/
