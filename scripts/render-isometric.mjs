@@ -42,3 +42,115 @@ export function isoProject(col, row) {
     y: (col + row) * (TILE_H / 2),
   };
 }
+
+const BAR_HEIGHT_UNIT = 8; // px per level
+
+function barPolygons(x, y, level) {
+  const h = level * BAR_HEIGHT_UNIT;
+  const topColor = LEVEL_COLORS[level].top;
+  const leftColor = shade(topColor, 0.7);
+  const rightColor = shade(topColor, 0.45);
+
+  const w = TILE_W / 2;
+  const d = TILE_H / 2;
+
+  // Top face (diamond), lifted by bar height
+  const top = [
+    [x, y - h],
+    [x + w, y + d - h],
+    [x, y + 2 * d - h],
+    [x - w, y + d - h],
+  ];
+  // Left face
+  const left = [
+    [x - w, y + d - h],
+    [x, y + 2 * d - h],
+    [x, y + 2 * d],
+    [x - w, y + d],
+  ];
+  // Right face
+  const right = [
+    [x, y + 2 * d - h],
+    [x + w, y + d - h],
+    [x + w, y + d],
+    [x, y + 2 * d],
+  ];
+
+  const pts = (arr) => arr.map(([px, py]) => `${px.toFixed(2)},${py.toFixed(2)}`).join(' ');
+
+  return { top: pts(top), left: pts(left), right: pts(right), topColor, leftColor, rightColor };
+}
+
+function renderBar(day, level, col, row) {
+  const { x, y } = isoProject(col, row);
+  const { top, left, right, topColor, leftColor, rightColor } = barPolygons(x, y, level);
+  const delay = (col * 0.02).toFixed(2);
+
+  const glow = level === 4
+    ? `<polygon points="${top}" fill="${topColor}" filter="url(#glow)" class="glow-bar" style="animation-delay:${(53 * 0.02 + 0.4).toFixed(2)}s"/>`
+    : '';
+
+  return `<g class="bar" style="animation-delay:${delay}s">
+    <polygon points="${left}" fill="${leftColor}"/>
+    <polygon points="${right}" fill="${rightColor}"/>
+    <polygon points="${top}" fill="${topColor}"/>
+    ${glow}
+  </g>`;
+}
+
+export function renderSVG(days) {
+  const counts = days.map((d) => d.contributionCount);
+  const levels = bucketLevels(counts);
+
+  const cols = 53;
+  const rows = 7;
+  const bars = days.map((day, i) => {
+    const col = Math.floor(i / rows);
+    const row = i % rows;
+    return renderBar(day, levels[i], col, row);
+  }).join('\n');
+
+  const growDuration = (cols * 0.02 + 0.3).toFixed(2);
+  const width = isoProject(cols, 0).x - isoProject(0, rows).x + TILE_W * 2;
+  const height = isoProject(cols, rows).y + TILE_H * 4;
+  const offsetX = isoProject(0, rows).x * -1 + TILE_W;
+
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width.toFixed(0)} ${height.toFixed(0)}">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="20%" r="80%">
+      <stop offset="0%" stop-color="#141b3a"/>
+      <stop offset="100%" stop-color="#0a0e1a"/>
+    </radialGradient>
+    <filter id="glow" x="-100%" y="-100%" width="300%" height="300%">
+      <feGaussianBlur stdDeviation="3" result="blur">
+        <animate attributeName="stdDeviation" values="2;5;2" dur="2.4s" repeatCount="indefinite"/>
+      </feGaussianBlur>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <style>
+      .bar { opacity: 0; animation: grow-in 0.4s ease-out forwards; transform-box: fill-box; transform-origin: bottom; }
+      @keyframes grow-in { from { opacity: 0; transform: scaleY(0); } to { opacity: 1; transform: scaleY(1); } }
+      .glow-bar { opacity: 0; animation: pulse 2.4s ease-in-out infinite; }
+      @keyframes pulse { 0%, 100% { opacity: 0.3; } 50% { opacity: 0.9; } }
+    </style>
+  </defs>
+  <rect x="0" y="0" width="${width.toFixed(0)}" height="${height.toFixed(0)}" fill="url(#bg)"/>
+  <g transform="translate(${offsetX.toFixed(2)}, ${TILE_H.toFixed(2)})">
+    ${bars}
+  </g>
+</svg>`;
+}
+
+if (import.meta.url === `file://${process.argv[1]}`) {
+  const [, , inputPath, outputPath] = process.argv;
+  if (!inputPath || !outputPath) {
+    console.error('Usage: node render-isometric.mjs <input.json> <output.svg>');
+    process.exit(1);
+  }
+  const fs = await import('node:fs');
+  const days = JSON.parse(fs.readFileSync(inputPath, 'utf8'));
+  fs.writeFileSync(outputPath, renderSVG(days));
+}

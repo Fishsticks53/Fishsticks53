@@ -32,3 +32,26 @@ import { bucketLevels, shade, isoProject } from './render-isometric.mjs';
 }
 
 console.log('Task 1 tests complete');
+
+import { renderSVG } from './render-isometric.mjs';
+
+{
+  // 53 weeks x 7 days = 371 synthetic days, deterministic pseudo-random counts
+  const days = Array.from({ length: 371 }, (_, i) => ({
+    date: new Date(2025, 0, 1 + i).toISOString().slice(0, 10),
+    contributionCount: (i * 37) % 11,
+  }));
+
+  const svg = renderSVG(days);
+
+  assert.ok(svg.startsWith('<svg'), 'output must be an SVG document');
+  assert.ok(svg.includes('</svg>'), 'output must be well-formed (closing tag present)');
+  assert.ok(!svg.includes('NaN'), 'no coordinate may be NaN');
+
+  const barGroups = svg.match(/<g class="bar"/g) || [];
+  assert.strictEqual(barGroups.length, 371, `expected 371 bar groups, got ${barGroups.length}`);
+
+  console.log('renderSVG: PASS');
+}
+
+console.log('Task 2 tests complete');
