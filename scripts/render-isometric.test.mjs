@@ -51,6 +51,17 @@ import { renderSVG } from './render-isometric.mjs';
   const barGroups = svg.match(/<g class="bar"/g) || [];
   assert.strictEqual(barGroups.length, 371, `expected 371 bar groups, got ${barGroups.length}`);
 
+  // Verify no bar polygon has negative y-coordinates (checks for clipping at top)
+  const pointsMatches = svg.match(/points="([^"]+)"/g) || [];
+  for (const pointsAttr of pointsMatches) {
+    const points = pointsAttr.match(/[\d.-]+,[\d.-]+/g) || [];
+    for (const point of points) {
+      const [, yStr] = point.split(',');
+      const y = parseFloat(yStr);
+      assert.ok(y >= 0, `coordinate y=${y} is negative; bars are being clipped at the top`);
+    }
+  }
+
   console.log('renderSVG: PASS');
 }
 

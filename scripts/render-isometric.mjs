@@ -44,6 +44,7 @@ export function isoProject(col, row) {
 }
 
 const BAR_HEIGHT_UNIT = 8; // px per level
+const MAX_BAR_HEIGHT = 4 * BAR_HEIGHT_UNIT; // maximum lift for level-4 bars
 
 function barPolygons(x, y, level) {
   const h = level * BAR_HEIGHT_UNIT;
@@ -81,13 +82,14 @@ function barPolygons(x, y, level) {
   return { top: pts(top), left: pts(left), right: pts(right), topColor, leftColor, rightColor };
 }
 
-function renderBar(day, level, col, row) {
+function renderBar(day, level, col, row, totalGrowDuration) {
   const { x, y } = isoProject(col, row);
-  const { top, left, right, topColor, leftColor, rightColor } = barPolygons(x, y, level);
+  // Shift y-coordinates up by MAX_BAR_HEIGHT to ensure no bar's top face goes negative
+  const { top, left, right, topColor, leftColor, rightColor } = barPolygons(x, y + MAX_BAR_HEIGHT, level);
   const delay = (col * 0.02).toFixed(2);
 
   const glow = level === 4
-    ? `<polygon points="${top}" fill="${topColor}" filter="url(#glow)" class="glow-bar" style="animation-delay:${(53 * 0.02 + 0.4).toFixed(2)}s"/>`
+    ? `<polygon points="${top}" fill="${topColor}" filter="url(#glow)" class="glow-bar" style="animation-delay:${totalGrowDuration.toFixed(2)}s"/>`
     : '';
 
   return `<g class="bar" style="animation-delay:${delay}s">
@@ -104,16 +106,20 @@ export function renderSVG(days) {
 
   const cols = 53;
   const rows = 7;
+
+  // Total grow-in duration: last column's delay + animation duration
+  const totalGrowDuration = (cols - 1) * 0.02 + 0.4;
+
   const bars = days.map((day, i) => {
     const col = Math.floor(i / rows);
     const row = i % rows;
-    return renderBar(day, levels[i], col, row);
+    return renderBar(day, levels[i], col, row, totalGrowDuration);
   }).join('\n');
 
-  const growDuration = (cols * 0.02 + 0.3).toFixed(2);
   const width = isoProject(cols, 0).x - isoProject(0, rows).x + TILE_W * 2;
-  const height = isoProject(cols, rows).y + TILE_H * 4;
+  const height = isoProject(cols, rows).y + TILE_H * 4 + MAX_BAR_HEIGHT;
   const offsetX = isoProject(0, rows).x * -1 + TILE_W;
+  const offsetY = TILE_H;
 
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width.toFixed(0)} ${height.toFixed(0)}">
   <defs>
@@ -138,7 +144,7 @@ export function renderSVG(days) {
     </style>
   </defs>
   <rect x="0" y="0" width="${width.toFixed(0)}" height="${height.toFixed(0)}" fill="url(#bg)"/>
-  <g transform="translate(${offsetX.toFixed(2)}, ${TILE_H.toFixed(2)})">
+  <g transform="translate(${offsetX.toFixed(2)}, ${offsetY.toFixed(2)})">
     ${bars}
   </g>
 </svg>`;
