@@ -38,6 +38,12 @@
   <img src="https://github-readme-streak-stats.herokuapp.com/?user=your-username&theme=tokyonight&hide_border=true" />
 </p>
 
+### 🏙️ Contributions
+
+<p align="center">
+  <img src="./assets/contributions-isometric.svg" alt="Isometric contribution graph" />
+</p>
+
 ### 🔗 Connect
 
 <p>
