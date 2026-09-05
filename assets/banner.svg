@@ -19,12 +19,12 @@
       .walker { animation: walk 8s ease-in-out infinite alternate; }
       @keyframes walk {
         0% { translate: 40px 150px; }
-        50% { translate: 40px 146px; }
+        50% { translate: 380px 146px; }
         100% { translate: 720px 150px; }
       }
       .name-shadow { font: 700 26px ui-monospace, "Courier New", monospace; letter-spacing: 4px; fill: #00e5ff; }
       .name { font: 700 26px ui-monospace, "Courier New", monospace; letter-spacing: 4px; fill: #ff2ec4; }
-      .tagline { font: 400 9px ui-monospace, "Courier New", monospace; fill: #b9c3e8; }
+      .tagline { font: 400 11px ui-monospace, "Courier New", monospace; fill: #b9c3e8; }
     </style>
   </defs>
   <rect x="0" y="0" width="800" height="200" fill="url(#bg)"/>

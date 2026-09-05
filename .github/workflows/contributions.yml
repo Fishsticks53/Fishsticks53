@@ -36,6 +36,7 @@ jobs:
         run: |
           node scripts/render-isometric.test.mjs
           node scripts/fetch-contributions.test.mjs
+          node scripts/render-banner.test.mjs
 
       - name: Fetch contribution data
         env:

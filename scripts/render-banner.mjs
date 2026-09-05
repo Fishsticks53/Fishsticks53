@@ -39,7 +39,7 @@ const VIEW_HEIGHT = 200;
 
 function renderBuilding(b) {
   const y = VIEW_HEIGHT - b.height;
-  // A scattered lit window every other building, fixed relative offset (deterministic, no randomness).
+  // A lit window on buildings tall enough to plausibly have one, fixed relative offset (deterministic, no randomness).
   const window = b.height > 80
     ? `<rect class="window" x="${b.x + 8}" y="${y + 12}" width="4" height="4" fill="#7b2fbf" fill-opacity="0.6"/>`
     : '';
@@ -89,12 +89,12 @@ export function renderBanner() {
       .walker { animation: walk 8s ease-in-out infinite alternate; }
       @keyframes walk {
         0% { translate: 40px 150px; }
-        50% { translate: 40px 146px; }
+        50% { translate: 380px 146px; }
         100% { translate: 720px 150px; }
       }
       .name-shadow { font: 700 26px ui-monospace, "Courier New", monospace; letter-spacing: 4px; fill: #00e5ff; }
       .name { font: 700 26px ui-monospace, "Courier New", monospace; letter-spacing: 4px; fill: #ff2ec4; }
-      .tagline { font: 400 9px ui-monospace, "Courier New", monospace; fill: #b9c3e8; }
+      .tagline { font: 400 11px ui-monospace, "Courier New", monospace; fill: #b9c3e8; }
     </style>
   </defs>
   <rect x="0" y="0" width="${VIEW_WIDTH}" height="${VIEW_HEIGHT}" fill="url(#bg)"/>

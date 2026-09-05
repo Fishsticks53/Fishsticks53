@@ -1,4 +1,5 @@
 import assert from 'node:assert';
+import { readFileSync } from 'node:fs';
 import { PIXEL, snap, BUILDINGS, SIGNS } from './render-banner.mjs';
 
 // snap: rounds to the nearest multiple of PIXEL (4)
@@ -58,6 +59,15 @@ import { renderBanner } from './render-banner.mjs';
   assert.ok(svg.includes('Full-stack developer building AI-enabled systems with agentic architectures.'), 'tagline text must be present');
 
   console.log('renderBanner: PASS');
+}
+
+// assets/banner.svg must match what renderBanner() produces right now, or it has drifted
+// from the committed generator source.
+{
+  const committed = readFileSync(new URL('../assets/banner.svg', import.meta.url), 'utf8');
+  const fresh = renderBanner();
+  assert.strictEqual(committed, fresh, 'assets/banner.svg is stale — re-run `node scripts/render-banner.mjs assets/banner.svg` and commit the result');
+  console.log('asset drift: PASS');
 }
 
 console.log('Task 2 tests complete');
