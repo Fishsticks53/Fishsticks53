@@ -1,0 +1,55 @@
+# .github/workflows/contributions.yml
+#
+# Setup required: this workflow needs a repository secret named PROFILE_TOKEN
+# — a GitHub Personal Access Token with the `read:user` scope.
+#   1. Create the token at GitHub Settings -> Developer settings -> Personal
+#      access tokens.
+#   2. Add it to this repo at Settings -> Secrets and variables -> Actions,
+#      as a secret named PROFILE_TOKEN.
+# Without this secret, the "Fetch contribution data" step below will fail
+# and the isometric contributions graph will not update.
+name: Update isometric contributions graph
+
+on:
+  schedule:
+    - cron: '0 6 * * *'
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: contributions-graph
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Run self-tests (must pass before touching the live asset)
+        run: |
+          node scripts/render-isometric.test.mjs
+          node scripts/fetch-contributions.test.mjs
+
+      - name: Fetch contribution data
+        env:
+          PROFILE_TOKEN: ${{ secrets.PROFILE_TOKEN }}
+          GITHUB_USERNAME: ${{ github.repository_owner }}
+        run: node scripts/fetch-contributions.mjs > /tmp/contributions.json
+
+      - name: Render isometric SVG
+        run: node scripts/render-isometric.mjs /tmp/contributions.json assets/contributions-isometric.svg
+
+      - name: Commit if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add assets/contributions-isometric.svg
+          git diff --cached --quiet || git commit -m "chore: update isometric contributions graph"
+          git push
