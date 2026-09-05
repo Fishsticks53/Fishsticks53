@@ -36,3 +36,28 @@ import { PIXEL, snap, BUILDINGS, SIGNS } from './render-banner.mjs';
 }
 
 console.log('Task 1 tests complete');
+
+import { renderBanner } from './render-banner.mjs';
+
+{
+  const svg = renderBanner();
+
+  assert.ok(svg.startsWith('<svg'), 'output must be an SVG document');
+  assert.ok(svg.includes('</svg>'), 'output must be well-formed (closing tag present)');
+  assert.ok(!svg.includes('NaN'), 'no coordinate may be NaN');
+
+  const buildingRects = svg.match(/class="building"/g) || [];
+  assert.strictEqual(buildingRects.length, BUILDINGS.length, `expected ${BUILDINGS.length} building rects, got ${buildingRects.length}`);
+
+  const signRects = svg.match(/class="sign/g) || [];
+  assert.strictEqual(signRects.length, SIGNS.length, `expected ${SIGNS.length} sign rects, got ${signRects.length}`);
+
+  assert.ok(svg.includes('filter="url(#glow)"'), 'signs must use the glow-bloom filter');
+  assert.ok(svg.includes('class="walker"'), 'walking figure must be present');
+  assert.ok(svg.includes('MONISH'), 'name text must be present');
+  assert.ok(svg.includes('Full-stack developer building AI-enabled systems with agentic architectures.'), 'tagline text must be present');
+
+  console.log('renderBanner: PASS');
+}
+
+console.log('Task 2 tests complete');
