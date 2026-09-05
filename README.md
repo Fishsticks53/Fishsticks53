@@ -1,15 +1,5 @@
-<h1 align="center">Hey, I'm Monish 👋</h1>
-
 <p align="center">
-  Full-stack developer building AI-enabled systems with agentic architectures.
-</p>
-
-<p align="center">
-  <img src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB" />
-  <img src="https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white" />
-  <img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white" />
-  <img src="https://img.shields.io/badge/FastAPI-005571?style=for-the-badge&logo=fastapi" />
-  <img src="https://img.shields.io/badge/LangChain-1C3C3C?style=for-the-badge&logo=langchain&logoColor=white" />
+  <img src="./assets/banner.svg" alt="Monish — Full-stack developer building AI-enabled systems with agentic architectures." />
 </p>
 
 ---

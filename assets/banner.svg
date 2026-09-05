@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 200">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="20%" r="80%">
+      <stop offset="0%" stop-color="#141b3a"/>
+      <stop offset="100%" stop-color="#0a0e1a"/>
+    </radialGradient>
+    <filter id="glow" x="-100%" y="-100%" width="300%" height="300%">
+      <feGaussianBlur stdDeviation="3" result="blur">
+        <animate attributeName="stdDeviation" values="2;5;2" dur="2.4s" repeatCount="indefinite"/>
+      </feGaussianBlur>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <style>
+      .glow-bar { opacity: 0; animation: pulse 2.4s ease-in-out infinite; }
+      @keyframes pulse { 0%, 100% { opacity: 0.3; } 50% { opacity: 0.9; } }
+      .walker { animation: walk 8s ease-in-out infinite alternate; }
+      @keyframes walk {
+        0% { translate: 40px 150px; }
+        50% { translate: 40px 146px; }
+        100% { translate: 720px 150px; }
+      }
+      .name-shadow { font: 700 26px ui-monospace, "Courier New", monospace; letter-spacing: 4px; fill: #00e5ff; }
+      .name { font: 700 26px ui-monospace, "Courier New", monospace; letter-spacing: 4px; fill: #ff2ec4; }
+      .tagline { font: 400 9px ui-monospace, "Courier New", monospace; fill: #b9c3e8; }
+    </style>
+  </defs>
+  <rect x="0" y="0" width="800" height="200" fill="url(#bg)"/>
+  <rect class="building" x="0" y="120" width="60" height="80" fill="#1a1030"/>
+<rect class="building" x="60" y="80" width="40" height="120" fill="#1a1030"/><rect class="window" x="68" y="92" width="4" height="4" fill="#7b2fbf" fill-opacity="0.6"/>
+<rect class="building" x="100" y="140" width="56" height="60" fill="#1a1030"/>
+<rect class="building" x="156" y="60" width="48" height="140" fill="#1a1030"/><rect class="window" x="164" y="72" width="4" height="4" fill="#7b2fbf" fill-opacity="0.6"/>
+<rect class="building" x="204" y="108" width="64" height="92" fill="#1a1030"/><rect class="window" x="212" y="120" width="4" height="4" fill="#7b2fbf" fill-opacity="0.6"/>
+<rect class="building" x="268" y="60" width="40" height="140" fill="#1a1030"/><rect class="window" x="276" y="72" width="4" height="4" fill="#7b2fbf" fill-opacity="0.6"/>
+<rect class="building" x="308" y="128" width="52" height="72" fill="#1a1030"/>
+<rect class="building" x="360" y="68" width="60" height="132" fill="#1a1030"/><rect class="window" x="368" y="80" width="4" height="4" fill="#7b2fbf" fill-opacity="0.6"/>
+<rect class="building" x="420" y="100" width="44" height="100" fill="#1a1030"/><rect class="window" x="428" y="112" width="4" height="4" fill="#7b2fbf" fill-opacity="0.6"/>
+<rect class="building" x="464" y="60" width="68" height="140" fill="#1a1030"/><rect class="window" x="472" y="72" width="4" height="4" fill="#7b2fbf" fill-opacity="0.6"/>
+<rect class="building" x="532" y="120" width="48" height="80" fill="#1a1030"/>
+<rect class="building" x="580" y="80" width="56" height="120" fill="#1a1030"/><rect class="window" x="588" y="92" width="4" height="4" fill="#7b2fbf" fill-opacity="0.6"/>
+<rect class="building" x="636" y="140" width="40" height="60" fill="#1a1030"/>
+<rect class="building" x="676" y="60" width="64" height="140" fill="#1a1030"/><rect class="window" x="684" y="72" width="4" height="4" fill="#7b2fbf" fill-opacity="0.6"/>
+<rect class="building" x="740" y="108" width="60" height="92" fill="#1a1030"/><rect class="window" x="748" y="120" width="4" height="4" fill="#7b2fbf" fill-opacity="0.6"/>
+  <rect class="sign glow-bar" x="72" y="88" width="16" height="10" fill="#ff2ec4" filter="url(#glow)" style="animation-delay:0.00s"/>
+<rect class="sign glow-bar" x="228" y="116" width="16" height="10" fill="#00e5ff" filter="url(#glow)" style="animation-delay:0.60s"/>
+<rect class="sign glow-bar" x="384" y="76" width="16" height="10" fill="#7b2fbf" filter="url(#glow)" style="animation-delay:1.20s"/>
+<rect class="sign glow-bar" x="600" y="88" width="16" height="10" fill="#e0218a" filter="url(#glow)" style="animation-delay:1.80s"/>
+  <g class="walker">
+    <rect x="0" y="0" width="4" height="4" fill="#ff2ec4"/>
+    <rect x="0" y="4" width="4" height="6" fill="#ff2ec4"/>
+    <rect x="0" y="10" width="2" height="4" fill="#ff2ec4"/>
+    <rect x="2" y="10" width="2" height="4" fill="#ff2ec4"/>
+  </g>
+  <text x="402" y="30" text-anchor="middle" class="name-shadow">MONISH</text>
+  <text x="400" y="28" text-anchor="middle" class="name">MONISH</text>
+  <text x="400" y="46" text-anchor="middle" class="tagline">Full-stack developer building AI-enabled systems with agentic architectures.</text>
+</svg>
