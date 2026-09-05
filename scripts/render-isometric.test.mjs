@@ -66,3 +66,32 @@ import { renderSVG } from './render-isometric.mjs';
 }
 
 console.log('Task 2 tests complete');
+
+// Integration: parseResponse output feeds directly into renderSVG (the fetch/render seam)
+{
+  const { parseResponse } = await import('./fetch-contributions.mjs');
+
+  const fixture = {
+    data: {
+      user: {
+        contributionsCollection: {
+          contributionCalendar: {
+            weeks: [
+              { contributionDays: [{ date: '2025-01-01', contributionCount: 3 }, { date: '2025-01-02', contributionCount: 0 }, { date: '2025-01-03', contributionCount: 5 }, { date: '2025-01-04', contributionCount: 1 }, { date: '2025-01-05', contributionCount: 2 }, { date: '2025-01-06', contributionCount: 0 }, { date: '2025-01-07', contributionCount: 4 }] },
+              { contributionDays: [{ date: '2025-01-08', contributionCount: 6 }, { date: '2025-01-09', contributionCount: 0 }, { date: '2025-01-10', contributionCount: 1 }, { date: '2025-01-11', contributionCount: 3 }, { date: '2025-01-12', contributionCount: 2 }, { date: '2025-01-13', contributionCount: 0 }, { date: '2025-01-14', contributionCount: 7 }] },
+              { contributionDays: [{ date: '2025-01-15', contributionCount: 2 }, { date: '2025-01-16', contributionCount: 1 }, { date: '2025-01-17', contributionCount: 0 }] },
+            ],
+          },
+        },
+      },
+    },
+  };
+
+  const days = parseResponse(fixture);
+  const svg = renderSVG(days);
+  const barGroups = svg.match(/<g class="bar"/g) || [];
+  assert.strictEqual(barGroups.length, days.length, 'renderSVG bar count must match parseResponse day count');
+  console.log('fetch -> render integration: PASS');
+}
+
+console.log('Task 4 tests complete');

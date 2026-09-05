@@ -1,3 +1,5 @@
+import { pathToFileURL } from 'node:url';
+
 export function buildQuery() {
   return `
     query($username: String!) {
@@ -55,7 +57,7 @@ async function main() {
   process.stdout.write(JSON.stringify(days));
 }
 
-if (import.meta.url === `file://${process.argv[1]}`) {
+if (import.meta.url === pathToFileURL(process.argv[1]).href) {
   main().catch((err) => {
     console.error(err.message);
     process.exit(1);

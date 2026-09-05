@@ -1,3 +1,4 @@
+import { pathToFileURL } from 'node:url';
 
 export const LEVEL_COLORS = [
   { top: '#141b2e' },
@@ -77,12 +78,12 @@ function barPolygons(x, y, level) {
     [x, y + 2 * d],
   ];
 
-  const pts = (arr) => arr.map(([px, py]) => `${px.toFixed(2)},${py.toFixed(2)}`).join(' ');
+  const pts = (arr) => arr.map(([px, py]) => `${px},${py}`).join(' ');
 
   return { top: pts(top), left: pts(left), right: pts(right), topColor, leftColor, rightColor };
 }
 
-function renderBar(day, level, col, row, totalGrowDuration) {
+function renderBar(level, col, row, totalGrowDuration) {
   const { x, y } = isoProject(col, row);
   // Shift y-coordinates up by MAX_BAR_HEIGHT to ensure no bar's top face goes negative
   const { top, left, right, topColor, leftColor, rightColor } = barPolygons(x, y + MAX_BAR_HEIGHT, level);
@@ -92,10 +93,18 @@ function renderBar(day, level, col, row, totalGrowDuration) {
     ? `<polygon points="${top}" fill="${topColor}" filter="url(#glow)" class="glow-bar" style="animation-delay:${totalGrowDuration.toFixed(2)}s"/>`
     : '';
 
+  // Level 0 has zero bar height, so left/right faces are degenerate (zero-area) polygons; skip them.
+  const sideFaces = level === 0
+    ? ''
+    : `<polygon points="${left}" fill="${leftColor}"/>
+    <polygon points="${right}" fill="${rightColor}"/>`;
+
+  // Locked spec: level 4 gets a cyan rim-light outline on the top face.
+  const rimStroke = level === 4 ? ' stroke="#00e5ff" stroke-width="0.5" stroke-opacity="0.7"' : '';
+
   return `<g class="bar" style="animation-delay:${delay}s">
-    <polygon points="${left}" fill="${leftColor}"/>
-    <polygon points="${right}" fill="${rightColor}"/>
-    <polygon points="${top}" fill="${topColor}"/>
+    ${sideFaces}
+    <polygon points="${top}" fill="${topColor}"${rimStroke}/>
     ${glow}
   </g>`;
 }
@@ -110,10 +119,10 @@ export function renderSVG(days) {
   // Total grow-in duration: last column's delay + animation duration
   const totalGrowDuration = (cols - 1) * 0.02 + 0.4;
 
-  const bars = days.map((day, i) => {
+  const bars = days.map((_day, i) => {
     const col = Math.floor(i / rows);
     const row = i % rows;
-    return renderBar(day, levels[i], col, row, totalGrowDuration);
+    return renderBar(levels[i], col, row, totalGrowDuration);
   }).join('\n');
 
   const width = isoProject(cols, 0).x - isoProject(0, rows).x + TILE_W * 2;
@@ -150,7 +159,7 @@ export function renderSVG(days) {
 </svg>`;
 }
 
-if (import.meta.url === `file://${process.argv[1]}`) {
+if (import.meta.url === pathToFileURL(process.argv[1]).href) {
   const [, , inputPath, outputPath] = process.argv;
   if (!inputPath || !outputPath) {
     console.error('Usage: node render-isometric.mjs <input.json> <output.svg>');
