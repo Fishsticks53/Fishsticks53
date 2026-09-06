@@ -64,7 +64,10 @@ import { renderBanner } from './render-banner.mjs';
 // assets/banner.svg must match what renderBanner() produces right now, or it has drifted
 // from the committed generator source.
 {
-  const committed = readFileSync(new URL('../assets/banner.svg', import.meta.url), 'utf8');
+  // Normalize line endings: git's autocrlf can check this file out as CRLF on Windows,
+  // while renderBanner() always produces LF - that's a checkout-environment difference,
+  // not real content drift.
+  const committed = readFileSync(new URL('../assets/banner.svg', import.meta.url), 'utf8').replace(/\r\n/g, '\n');
   const fresh = renderBanner();
   assert.strictEqual(committed, fresh, 'assets/banner.svg is stale — re-run `node scripts/render-banner.mjs assets/banner.svg` and commit the result');
   console.log('asset drift: PASS');
