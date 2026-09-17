@@ -1967,5 +1967,10 @@
     <polygon points="294,197 300,200 294,203 288,200" fill="#141b2e"/>
     
   </g>
+<g class="bar" style="animation-delay:1.04s, 1.44s">
+    
+    <polygon points="288,200 294,203 288,206 282,203" fill="#141b2e"/>
+    
+  </g>
   </g>
 </svg>
