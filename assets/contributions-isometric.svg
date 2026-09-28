@@ -29,7 +29,7 @@
     </style>
   </defs>
   <rect x="0" y="0" width="384" height="256" fill="url(#bg)"/>
-  <text x="192" y="14" text-anchor="middle" class="total-count">497 contributions in the last year</text>
+  <text x="192" y="14" text-anchor="middle" class="total-count">505 contributions in the last year</text>
   <g transform="translate(54.00, 26.00)">
     <g class="bar" style="animation-delay:0.00s, 0.40s">
     
@@ -1824,8 +1824,9 @@
     <polygon points="264,156 270,159 264,162 258,159" fill="#ff2ec4" filter="url(#glow)" class="glow-bar" style="animation-delay:1.44s"/>
   </g>
 <g class="bar" style="animation-delay:0.96s, 1.36s">
-    
-    <polygon points="258,191 264,194 258,197 252,194" fill="#141b2e"/>
+    <polygon points="252,186 258,189 258,197 252,194" fill="#291d4c"/>
+    <polygon points="258,189 264,186 264,194 258,197" fill="#1a1331"/>
+    <polygon points="258,183 264,186 258,189 252,186" fill="#3a2a6d"/>
     
   </g>
 <g class="bar" style="animation-delay:0.96s, 1.36s">
@@ -1875,8 +1876,9 @@
     
   </g>
 <g class="bar" style="animation-delay:1.00s, 1.40s">
-    
-    <polygon points="300,182 306,185 300,188 294,185" fill="#141b2e"/>
+    <polygon points="294,177 300,180 300,188 294,185" fill="#291d4c"/>
+    <polygon points="300,180 306,177 306,185 300,188" fill="#1a1331"/>
+    <polygon points="300,174 306,177 300,180 294,177" fill="#3a2a6d"/>
     
   </g>
 <g class="bar" style="animation-delay:1.00s, 1.40s">
@@ -1950,6 +1952,12 @@
 <g class="bar" style="animation-delay:1.04s, 1.44s">
     
     <polygon points="312,188 318,191 312,194 306,191" fill="#141b2e"/>
+    
+  </g>
+<g class="bar" style="animation-delay:1.04s, 1.44s">
+    <polygon points="300,178 306,181 306,197 300,194" fill="#562186"/>
+    <polygon points="306,181 312,178 312,194 306,197" fill="#371556"/>
+    <polygon points="306,175 312,178 306,181 300,178" fill="#7b2fbf"/>
     
   </g>
   </g>
