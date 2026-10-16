@@ -29,7 +29,7 @@
     </style>
   </defs>
   <rect x="0" y="0" width="384" height="256" fill="url(#bg)"/>
-  <text x="192" y="14" text-anchor="middle" class="total-count">514 contributions in the last year</text>
+  <text x="192" y="14" text-anchor="middle" class="total-count">519 contributions in the last year</text>
   <g transform="translate(54.00, 26.00)">
     <g class="bar" style="animation-delay:0.00s, 0.40s">
     
@@ -1955,13 +1955,15 @@
     
   </g>
 <g class="bar" style="animation-delay:1.04s, 1.44s">
-    
-    <polygon points="312,188 318,191 312,194 306,191" fill="#141b2e"/>
+    <polygon points="306,183 312,186 312,194 306,191" fill="#291d4c"/>
+    <polygon points="312,186 318,183 318,191 312,194" fill="#1a1331"/>
+    <polygon points="312,180 318,183 312,186 306,183" fill="#3a2a6d"/>
     
   </g>
 <g class="bar" style="animation-delay:1.04s, 1.44s">
-    
-    <polygon points="306,191 312,194 306,197 300,194" fill="#141b2e"/>
+    <polygon points="300,178 306,181 306,197 300,194" fill="#562186"/>
+    <polygon points="306,181 312,178 312,194 306,197" fill="#371556"/>
+    <polygon points="306,175 312,178 306,181 300,178" fill="#7b2fbf"/>
     
   </g>
 <g class="bar" style="animation-delay:1.04s, 1.44s">
@@ -1977,6 +1979,12 @@
 <g class="bar" style="animation-delay:1.04s, 1.44s">
     
     <polygon points="288,200 294,203 288,206 282,203" fill="#141b2e"/>
+    
+  </g>
+<g class="bar" style="animation-delay:1.04s, 1.44s">
+    <polygon points="276,198 282,201 282,209 276,206" fill="#291d4c"/>
+    <polygon points="282,201 288,198 288,206 282,209" fill="#1a1331"/>
+    <polygon points="282,195 288,198 282,201 276,198" fill="#3a2a6d"/>
     
   </g>
   </g>
