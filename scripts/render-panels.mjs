@@ -129,7 +129,7 @@ export function renderNow(mode = 'dark', { ago = '--', count = 0, days = 0 } = {
 export function renderCity(days, mode = 'dark') {
   const q = px(3), dark = mode === 'dark';
   const lv = dark ? ['#1c2145', '#7a5a2a', '#d8912a', '#ffcf7a', '#fff1b8'] : ['#aab3d2', '#e0b36a', '#d08a1c', '#a35800', '#7a3f00'];
-  const base = dark ? '#12152e' : '#c4cbe0';
+  const base = dark ? '#1d2150' : '#8a94bb';
   const CW = 266, CH = 38, gy = CH - 1;
   const levels = bucketLevels(days.map((d) => d.contributionCount));
   const weeks = [];
@@ -155,4 +155,49 @@ export function renderCity(days, mode = 'dark') {
   o += `<path d="${q.cell(0, gy, CW, 1)}" fill="${ACC[mode]}" opacity=".5"/>`;
   const total = days.reduce((a, d) => a + d.contributionCount, 0);
   return svgDoc({ width: CW * 3, height: CH * 3, label: `Contribution graph drawn as a city: one building per week, lit windows for active days, ${total} contributions in the last year`, body: o });
+}
+
+// ---- Footer: the tagline and the portfolio link as neon signs at street level ----
+
+export const TAGLINE = ['FULL-STACK DEVELOPER BUILDING', 'AI-ENABLED SYSTEMS WITH', 'AGENTIC ARCHITECTURES.'];
+export const CTA = 'VISIT MY PORTFOLIO >';
+
+export function renderFooter(mode = 'dark') {
+  const q = P4, T = THEMES[mode], dark = mode === 'dark', acc = ACC[mode];
+  const r = rng(81), RH = 70, G = 60;
+  const cta = dark ? '#1fe9ff' : '#00748f';
+  const X0 = 6, X1 = 194, WW = X1 - X0, wall = T.mid;
+  const core = (c) => (dark ? mix(c, '#ffffff', 0.5) : c);
+  let o = skyRows(T, RH, r, dark);
+  o += city(r, { T, accC: acc, win: false, top: G, h0: 14, h1: 34, w0: 6, w1: 12, fill: T.far });
+  o += `<path d="${cell(X0, 3, WW, G - 3)}" fill="${wall}"/>`;
+  let br = '';
+  for (let y = 7; y < G; y += 4) br += cell(X0, y, WW, 1);
+  o += `<path d="${br}" fill="${dark ? mix(wall, '#000000', 0.22) : mix(wall, '#ffffff', 0.14)}"/>`;
+  o += `<path d="${cell(X0, 3, 2, G - 3) + cell(X1 - 2, 3, 2, G - 3)}" fill="${T.near}"/><path d="${cell(X0, 3, WW, 1)}" fill="${acc}" opacity=".5"/>`;
+  const plate = (x, y, w, h, c) => `<path d="${cell(x, y, w, h)}" fill="${T.plate}"/>`
+    + `<path d="${cell(x, y, w, 1) + cell(x, y + h - 1, w, 1) + cell(x, y, 1, h) + cell(x + w - 1, y, 1, h)}" fill="${c}"${dark ? ' filter="url(#gs)"' : ''} opacity=".9"/>`;
+  const glow = (x, y, w, h, c) => `<ellipse cx="${(x + w / 2) * U}" cy="${(y + h / 2) * U}" rx="${(w / 2 + 8) * U}" ry="${(h / 2 + 8) * U}" fill="${c}" opacity="${dark ? 0.15 : 0.06}"/>`;
+  // Tagline sign
+  const tx = 10, ty = 6, tw = 180, th = 35;
+  let glows = glow(tx, ty, tw, th, acc), signs = plate(tx, ty, tw, th, acc);
+  TAGLINE.forEach((s, i) => {
+    signs += neon(q.letters(s, X0 + Math.floor((WW - q.width(s)) / 2), ty + 4 + i * 10, 1), acc, core(acc), mode, 'gs', i === 1 ? 2 : -1, -1.3);
+  });
+  // Portfolio link sign
+  const bw = q.width(CTA) + 10, bx = Math.floor((W - bw) / 2), by = 44, bh = 13;
+  const L = q.letters(CTA, bx + 5, by + 3, 1);
+  glows += glow(bx, by, bw, bh, cta);
+  signs += plate(bx, by, bw, bh, cta) + neon(L, cta, core(cta), mode, 'gs', 4, -0.7);
+  o += `<g filter="url(#fs)">${glows}</g>` + signs;
+  o += `<rect y="${G * U}" width="${W * U}" height="${(RH - G) * U}" fill="${T.near}"/><rect y="${G * U}" width="${W * U}" height="${U / 2}" fill="${acc}" opacity=".5"/>`;
+  o += `<clipPath id="cpf"><rect y="${(G + 1) * U}" width="${W * U}" height="${(RH - G - 1) * U}"/></clipPath><g clip-path="url(#cpf)"><g class="shim" transform="translate(0 ${2 * G * U}) scale(1 -1)"><path d="${L.join('')}" fill="${cta}"/></g></g>`;
+  [[40, 64], [110, 67], [160, 65]].forEach(([x, y], i) => {
+    o += `<ellipse class="ripple" style="animation-delay:${-i * 0.9}s" cx="${x * U}" cy="${y * U}" rx="10" ry="2.5" stroke="${acc}"/>`;
+  });
+  o += streetRain(r, T);
+  if (dark) o += vignette(RH);
+  const defs = '<filter id="gs" x="-10%" y="-40%" width="120%" height="180%"><feGaussianBlur stdDeviation="3"/></filter>'
+    + '<filter id="fs" x="-20%" y="-30%" width="140%" height="160%"><feGaussianBlur stdDeviation="9"/></filter>' + VIGNETTE_DEF;
+  return svgDoc({ rows: RH, label: 'Neon signs at street level: full-stack developer building AI-enabled systems with agentic architectures, and a link to visit the portfolio', defs, body: o });
 }

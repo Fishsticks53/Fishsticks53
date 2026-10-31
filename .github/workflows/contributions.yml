@@ -7,7 +7,7 @@
 #   2. Add it to this repo at Settings -> Secrets and variables -> Actions,
 #      as a secret named PROFILE_TOKEN.
 # Without this secret, the "Fetch contribution data" step below will fail
-# and the profile assets (banner, now board, contribution city) will not update.
+# and the profile picture (assets/profile-*.svg) will not update.
 name: Update profile assets
 
 on:
@@ -50,6 +50,6 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add assets/banner-dark.svg assets/banner-light.svg assets/now-dark.svg assets/now-light.svg assets/city-dark.svg assets/city-light.svg
+          git add assets/profile-dark.svg assets/profile-light.svg
           git diff --cached --quiet || git commit -m "chore: update profile assets"
           git push

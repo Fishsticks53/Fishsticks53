@@ -28,21 +28,26 @@ export function renderBanner(mode = 'dark', { commits30 = 41 } = {}) {
   o += `<path d="${c(62, 44, 2, 6)}" fill="${T.near}"/>`;
   for (let i = 0; i < 3; i++) o += `<rect class="steam" style="animation-delay:${-i * 1.1}s" x="${(62 + i * 0.5) * U}" y="${42 * U}" width="${U * 2}" height="${U * 2}" fill="${T.fig}"/>`;
 
+  // Lean-to awning with string lights, so nobody sits in the rain (rain is clipped out beneath it).
+  o += `<ellipse cx="${103 * U}" cy="${40 * U}" rx="${26 * U}" ry="${10 * U}" fill="${T.warm}" opacity="${dark ? 0.1 : 0.05}" filter="url(#fg)"/>`;
+  o += `<path d="${c(78, 28, 52, 2) + c(79, 30, 1, 20) + c(127, 30, 1, 20)}" fill="${T.near}"/><path d="${c(76, 30, 56, 1)}" fill="${mix(T.near, acc, 0.18)}"/><path d="${c(80, 31, 46, 1)}" fill="${T.dim}"/>`;
+  for (let i = 0; i < 8; i++) o += `<rect class="bl b${i % 3}" x="${(83 + i * 6) * U}" y="${32 * U}" width="${U}" height="${U}" fill="${T.warm}"/>`;
+
   // Laptop and its glow spill.
   o += `<ellipse cx="${92 * U}" cy="${46 * U}" rx="${14 * U}" ry="${8 * U}" fill="${T.warm}" opacity="${dark ? 0.14 : 0.07}" filter="url(#fg)"/>`;
   o += `<path d="${c(84, 43, 8, 6)}" fill="${T.mid}"/><path d="${c(83, 49, 10, 1)}" fill="${T.dim}"/><rect x="${87 * U}" y="${45 * U}" width="${2 * U}" height="${2 * U}" fill="${T.warm}"${dark ? ' filter="url(#gl)"' : ''}/>`;
 
-  // You: slim profile turned toward the laptop. Black hair, glasses, #e00847 jacket.
+  // You: slim, hunched toward the laptop. Black hair, glasses, #e00847 jacket.
   const JK = '#e00847';
   const SK = dark ? '#d9a37f' : '#c58f6c';
   const HR = dark ? '#0a0a12' : '#15191f';
   const PN = dark ? '#1a1f3a' : '#3a4166';
-  o += `<path d="${c(97, 35, 3, 1) + c(96, 36, 5, 1) + c(98, 37, 3, 1) + c(100, 38, 1, 1) + c(99, 39, 1, 1)}" fill="${HR}"/>`;
-  o += `<path d="${c(96, 37, 2, 1) + c(96, 39, 3, 1) + c(97, 40, 2, 1)}" fill="${SK}"/>`;
-  o += `<path d="${c(96, 38, 4, 1)}" fill="#0b0b12"/><rect x="${96 * U}" y="${38 * U}" width="${U}" height="${U}" fill="${T.warm}"/>`;
-  o += `<path d="${c(95, 41, 7, 1) + c(96, 42, 6, 5) + c(93, 45, 4, 1)}" fill="${JK}"/><path d="${c(96, 41, 3, 1)}" fill="${mix(JK, '#ffffff', 0.25)}"/><path d="${c(96, 43, 2, 3)}" fill="${mix(JK, '#000000', 0.2)}"/><path d="${c(92, 45, 1, 1)}" fill="${SK}"/>`;
-  o += `<path d="${c(96, 47, 6, 1) + c(92, 48, 10, 2)}" fill="${PN}"/><path d="${c(100, 36, 1, 1)}" fill="#2b3260"/>`;
-  if (dark) o += `<path d="${c(102, 41, 1, 6)}" fill="${acc}" opacity=".55"/>`;
+  o += `<path d="${c(97, 35, 3, 1) + c(96, 36, 4, 1) + c(98, 37, 2, 1) + c(99, 38, 1, 1)}" fill="${HR}"/><path d="${c(99, 36, 1, 1)}" fill="#2b3260"/>`;
+  o += `<path d="${c(96, 37, 2, 1) + c(96, 39, 2, 1) + c(97, 40, 2, 1)}" fill="${SK}"/>`;
+  o += `<path d="${c(96, 38, 3, 1)}" fill="#0b0b12"/><rect x="${96 * U}" y="${38 * U}" width="${U}" height="${U}" fill="${T.warm}"/>`;
+  o += `<path d="${c(96, 41, 5, 1) + c(97, 42, 4, 5) + c(94, 45, 3, 1)}" fill="${JK}"/><path d="${c(96, 41, 2, 1)}" fill="${mix(JK, '#ffffff', 0.25)}"/><path d="${c(97, 43, 1, 3)}" fill="${mix(JK, '#000000', 0.22)}"/><path d="${c(93, 45, 1, 1)}" fill="${SK}"/>`;
+  o += `<path d="${c(97, 47, 4, 1) + c(93, 48, 8, 2)}" fill="${PN}"/>`;
+  if (dark) o += `<path d="${c(101, 41, 1, 6)}" fill="${acc}" opacity=".5"/>`;
 
   // Mug and cat.
   o += `<path d="${c(107, 47, 3, 3) + c(110, 48, 1, 1)}" fill="${T.fig}"/>`;
@@ -59,10 +64,13 @@ export function renderBanner(mode = 'dark', { commits30 = 41 } = {}) {
   });
   for (let g = 0; g < 3; g++) {
     let d = '';
-    for (let i = 0; i < 6; i++) d += c(Math.floor(r() * W), 51 + Math.floor(r() * 8), 2, 1);
+    for (let i = 0; i < 6; i++) {
+      const x = Math.floor(r() * W), y = 51 + Math.floor(r() * 8);
+      if (x < 76 || x >= 132) d += c(x, y, 2, 1);
+    }
     o += `<path class="splash" style="animation-delay:${-g * 0.3}s" d="${d}" fill="${T.rain}"/>`;
   }
-  o += streetRain(r, T);
+  o += `<g clip-path="url(#nr)">${streetRain(r, T)}</g>`;
   if (dark) {
     const pts = [[60, 0], [59, 4], [61, 8], [58, 13], [60, 18], [57, 24]];
     let b = '';
@@ -73,7 +81,8 @@ export function renderBanner(mode = 'dark', { commits30 = 41 } = {}) {
     o += `<rect class="flash" width="${W * U}" height="${H * U}" fill="#cfe0ff"/><path class="bolt" d="${b}" fill="#f2f6ff"/>`;
     o += vignette(H);
   }
-  const defs = '<filter id="gl" x="-10%" y="-30%" width="120%" height="160%"><feGaussianBlur stdDeviation="5"/></filter>'
+  const defs = `<clipPath id="nr"><path clip-rule="evenodd" d="M0 0H${W * U}V${H * U}H0Z M${76 * U} ${30 * U}H${132 * U}V${50 * U}H${76 * U}Z"/></clipPath>`
+    + '<filter id="gl" x="-10%" y="-30%" width="120%" height="160%"><feGaussianBlur stdDeviation="5"/></filter>'
     + '<filter id="fg" x="-50%" y="-100%" width="200%" height="300%"><feGaussianBlur stdDeviation="9"/></filter>'
     + `<linearGradient id="sl" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="${acc}" stop-opacity=".32"/><stop offset="1" stop-color="${acc}" stop-opacity="0"/></linearGradient>`
     + VIGNETTE_DEF;

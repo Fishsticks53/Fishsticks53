@@ -2,7 +2,7 @@ import assert from 'node:assert';
 import { readFileSync } from 'node:fs';
 import { mix, px, rng } from './pixel.mjs';
 import { renderBanner, renderDivider } from './render-banner.mjs';
-import { renderStack, renderNow, renderCity, commits30, streak, agoLabel, bucketLevels, STACK } from './render-panels.mjs';
+import { renderStack, renderNow, renderCity, renderFooter, commits30, streak, agoLabel, bucketLevels, STACK } from './render-panels.mjs';
 import { renderAll } from './render-all.mjs';
 
 const days = (counts) => counts.map((contributionCount, i) => ({ date: `2026-10-${String(i + 1).padStart(2, '0')}`, contributionCount }));
@@ -63,6 +63,9 @@ const wellFormed = (svg, name) => {
     assert.ok(renderNow(mode, { days: 1 }).includes('1 day streak'));
 
     wellFormed(renderDivider(mode), `divider-${mode}`);
+    const footer = renderFooter(mode);
+    wellFormed(footer, `footer-${mode}`);
+    assert.ok(footer.includes('full-stack developer building AI-enabled systems with agentic architectures') && footer.includes('visit the portfolio'));
     const city = renderCity(sample, mode);
     wellFormed(city, `city-${mode}`);
     assert.ok(city.includes('contributions in the last year'));
@@ -72,24 +75,20 @@ const wellFormed = (svg, name) => {
   console.log('renderers: PASS');
 }
 
-// renderAll writes both themes of every asset and accepts either data shape
+// renderAll writes one continuous picture per theme and accepts either data shape.
+// (No asset-drift check: the committed files carry live stats, so they change every run.)
 {
   const files = renderAll({ days: sample, lastCommitAt: '2026-11-01T06:00:00Z' }, Date.parse('2026-11-01T12:00:00Z'));
-  assert.strictEqual(Object.keys(files).length, 10);
-  assert.ok(files['now-dark.svg'].includes('6h ago'));
+  assert.deepStrictEqual(Object.keys(files).sort(), ['profile-dark.svg', 'profile-light.svg']);
+  for (const [name, svg] of Object.entries(files)) {
+    wellFormed(svg, name);
+    assert.strictEqual((svg.match(/<svg /g) || []).length, 10, `${name}: outer svg + 5 scenes + 4 joins`);
+    assert.ok(svg.includes('6h ago') && svg.includes('Select to visit the portfolio'), `${name}: label carries stats and the link`);
+    assert.strictEqual((svg.match(/<style>/g) || []).length, 1, `${name}: animation CSS embedded once`);
+    for (const id of ['cp', 'cpf', 'nr']) assert.strictEqual((svg.match(new RegExp(`id="${id}"`, 'g')) || []).length, 1, `${name}: clipPath #${id} defined once`);
+  }
   assert.deepStrictEqual(Object.keys(renderAll(sample)).sort(), Object.keys(files).sort());
   console.log('renderAll: PASS');
-}
-
-// Static assets (no live data in them) must match the generator, or they have drifted.
-// CRLF is normalised: git autocrlf can check files out as CRLF on Windows.
-{
-  const all = renderAll(sample);
-  for (const name of Object.keys(all).filter((n) => /^(stack|divider)-/.test(n))) {
-    const committed = readFileSync(new URL(`../assets/${name}`, import.meta.url), 'utf8').replace(/\r\n/g, '\n');
-    assert.strictEqual(committed, all[name], `assets/${name} is stale — re-run \`node scripts/render-all.mjs fixtures/sample-profile.json assets\` and commit the result`);
-  }
-  console.log('asset drift: PASS');
 }
 
 console.log('render tests complete');
