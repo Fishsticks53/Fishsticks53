@@ -29,7 +29,7 @@
     </style>
   </defs>
   <rect x="0" y="0" width="384" height="256" fill="url(#bg)"/>
-  <text x="192" y="14" text-anchor="middle" class="total-count">641 contributions in the last year</text>
+  <text x="192" y="14" text-anchor="middle" class="total-count">651 contributions in the last year</text>
   <g transform="translate(54.00, 26.00)">
     <g class="bar" style="animation-delay:0.00s, 0.40s">
     
@@ -1997,6 +1997,12 @@
     <polygon points="282,177 288,174 288,206 282,209" fill="#731558"/>
     <polygon points="282,171 288,174 282,177 276,174" fill="#ff2ec4" stroke="#00e5ff" stroke-width="0.5" stroke-opacity="0.7"/>
     <polygon points="282,171 288,174 282,177 276,174" fill="#ff2ec4" filter="url(#glow)" class="glow-bar" style="animation-delay:1.44s"/>
+  </g>
+<g class="bar" style="animation-delay:1.04s, 1.44s">
+    <polygon points="270,177 276,180 276,212 270,209" fill="#b32089"/>
+    <polygon points="276,180 282,177 282,209 276,212" fill="#731558"/>
+    <polygon points="276,174 282,177 276,180 270,177" fill="#ff2ec4" stroke="#00e5ff" stroke-width="0.5" stroke-opacity="0.7"/>
+    <polygon points="276,174 282,177 276,180 270,177" fill="#ff2ec4" filter="url(#glow)" class="glow-bar" style="animation-delay:1.44s"/>
   </g>
   </g>
 </svg>
