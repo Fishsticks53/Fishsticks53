@@ -1,5 +1,20 @@
 import assert from 'node:assert';
-import { buildQuery, parseResponse } from './fetch-contributions.mjs';
+import { buildQuery, parseResponse, parseLastCommit } from './fetch-contributions.mjs';
+
+// parseLastCommit: newest timestamp wins, repo names are never read, missing data gives null
+{
+  const json = {
+    data: { user: { contributionsCollection: { commitContributionsByRepository: [
+      { contributions: { nodes: [{ occurredAt: '2026-10-30T10:00:00Z' }] } },
+      { contributions: { nodes: [{ occurredAt: '2026-11-01T06:00:00Z' }] } },
+      { contributions: { nodes: [] } },
+    ] } } },
+  };
+  assert.strictEqual(parseLastCommit(json), '2026-11-01T06:00:00Z');
+  assert.strictEqual(parseLastCommit({ data: { user: { contributionsCollection: {} } } }), null);
+  assert.strictEqual(parseLastCommit({}), null);
+  console.log('parseLastCommit: PASS');
+}
 
 {
   const query = buildQuery();

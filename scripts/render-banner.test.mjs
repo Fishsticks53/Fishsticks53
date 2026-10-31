@@ -1,76 +1,95 @@
 import assert from 'node:assert';
 import { readFileSync } from 'node:fs';
-import { PIXEL, snap, BUILDINGS, SIGNS } from './render-banner.mjs';
+import { mix, px, rng } from './pixel.mjs';
+import { renderBanner, renderDivider } from './render-banner.mjs';
+import { renderStack, renderNow, renderCity, commits30, streak, agoLabel, bucketLevels, STACK } from './render-panels.mjs';
+import { renderAll } from './render-all.mjs';
 
-// snap: rounds to the nearest multiple of PIXEL (4)
+const days = (counts) => counts.map((contributionCount, i) => ({ date: `2026-10-${String(i + 1).padStart(2, '0')}`, contributionCount }));
+const sample = JSON.parse(readFileSync(new URL('../fixtures/sample-profile.json', import.meta.url), 'utf8')).days;
+const wellFormed = (svg, name) => {
+  assert.ok(svg.startsWith('<svg '), `${name}: must be an SVG document`);
+  assert.ok(svg.trimEnd().endsWith('</svg>'), `${name}: closing tag present`);
+  assert.ok(!/NaN|undefined/.test(svg), `${name}: no NaN/undefined coordinates`);
+  assert.ok(svg.includes('prefers-reduced-motion'), `${name}: must honour reduced motion`);
+};
+
+// pixel toolkit
 {
-  assert.strictEqual(PIXEL, 4);
-  assert.strictEqual(snap(5), 4);
-  assert.strictEqual(snap(6), 8);
-  assert.strictEqual(snap(0), 0);
-  console.log('snap: PASS');
+  assert.strictEqual(mix('#000000', '#ffffff', 0.5), '#808080');
+  assert.strictEqual(px(4).width('AB'), 11, 'two 5-wide glyphs plus one gap column');
+  assert.strictEqual(px(4).width('A B'), 15, 'a space advances 4 columns');
+  const a = rng(1), b = rng(1);
+  assert.strictEqual(a(), b(), 'rng must be deterministic');
+  console.log('pixel toolkit: PASS');
 }
 
-// BUILDINGS: a full-width, pixel-grid-aligned skyline
+// stats come only from the calendar and a timestamp
 {
-  assert.strictEqual(BUILDINGS.length, 15);
-  const totalWidth = BUILDINGS.reduce((sum, b) => sum + b.width, 0);
-  assert.strictEqual(totalWidth, 800, 'buildings must span the full 800px banner width');
-  for (const b of BUILDINGS) {
-    assert.strictEqual(b.x % PIXEL, 0, `building x=${b.x} not grid-aligned`);
-    assert.strictEqual(b.width % PIXEL, 0, `building width=${b.width} not grid-aligned`);
-    assert.strictEqual(b.height % PIXEL, 0, `building height=${b.height} not grid-aligned`);
-    assert.ok(b.height <= 140, `building height=${b.height} exceeds the 140px cap (must leave clear sky for the name/tagline text)`);
+  assert.strictEqual(commits30(days([1, 2, 3])), 6);
+  assert.strictEqual(streak(days([0, 2, 3, 1])), 3);
+  assert.strictEqual(streak(days([2, 3, 1, 0])), 3, 'an empty today does not break the streak');
+  assert.strictEqual(streak(days([0, 0])), 0);
+  const now = Date.parse('2026-11-01T12:00:00Z');
+  assert.strictEqual(agoLabel('2026-11-01T11:59:30Z', now), 'JUST NOW');
+  assert.strictEqual(agoLabel('2026-11-01T10:00:00Z', now), '2H AGO');
+  assert.strictEqual(agoLabel('2026-10-28T12:00:00Z', now), '4D AGO');
+  assert.strictEqual(agoLabel(null, now), '--');
+  assert.strictEqual(agoLabel('not a date', now), '--');
+  const levels = bucketLevels([0, 0, 1, 2, 3, 4, 5, 6, 7, 8]);
+  assert.strictEqual(levels[0], 0);
+  assert.strictEqual(levels[9], 4, 'highest count maps to level 4');
+  console.log('stats: PASS');
+}
+
+// renderers
+{
+  for (const mode of ['dark', 'light']) {
+    const banner = renderBanner(mode);
+    wellFormed(banner, `banner-${mode}`);
+    assert.ok(banner.includes('#e00847'), 'jacket colour present');
+    assert.ok(!banner.includes('MONISH'), 'the name sign was removed from the banner');
+    assert.strictEqual(banner.includes('class="bolt"'), mode === 'dark', 'lightning is dark-theme only');
+    assert.notStrictEqual(renderBanner(mode, { commits30: 0 }), renderBanner(mode, { commits30: 200 }), 'commit volume must change the windows');
+    assert.strictEqual(renderBanner(mode), renderBanner(mode), 'deterministic');
+
+    const stack = renderStack(mode);
+    wellFormed(stack, `stack-${mode}`);
+    for (const name of STACK.flat()) assert.ok(stack.includes(name), `stack names ${name}`);
+
+    const now = renderNow(mode, { ago: '2H AGO', count: 41, days: 6 });
+    wellFormed(now, `now-${mode}`);
+    assert.ok(now.includes('2h ago') && now.includes('41 contributions') && now.includes('6 day streak'), 'now label carries the stats');
+    assert.ok(renderNow(mode, { days: 1 }).includes('1 day streak'));
+
+    wellFormed(renderDivider(mode), `divider-${mode}`);
+    const city = renderCity(sample, mode);
+    wellFormed(city, `city-${mode}`);
+    assert.ok(city.includes('contributions in the last year'));
+    assert.notStrictEqual(city, renderCity([], mode), 'activity must change the skyline');
   }
-  console.log('BUILDINGS: PASS');
+  assert.notStrictEqual(renderBanner('dark'), renderBanner('light'));
+  console.log('renderers: PASS');
 }
 
-// SIGNS: each references a valid building index and has a distinct stagger delay
+// renderAll writes both themes of every asset and accepts either data shape
 {
-  assert.strictEqual(SIGNS.length, 4);
-  const delays = SIGNS.map((s) => s.delay);
-  assert.strictEqual(new Set(delays).size, 4, 'signs must have distinct delays so they flicker out of sync');
-  for (const s of SIGNS) {
-    assert.ok(s.buildingIndex >= 0 && s.buildingIndex < BUILDINGS.length, `sign references invalid building index ${s.buildingIndex}`);
+  const files = renderAll({ days: sample, lastCommitAt: '2026-11-01T06:00:00Z' }, Date.parse('2026-11-01T12:00:00Z'));
+  assert.strictEqual(Object.keys(files).length, 10);
+  assert.ok(files['now-dark.svg'].includes('6h ago'));
+  assert.deepStrictEqual(Object.keys(renderAll(sample)).sort(), Object.keys(files).sort());
+  console.log('renderAll: PASS');
+}
+
+// Static assets (no live data in them) must match the generator, or they have drifted.
+// CRLF is normalised: git autocrlf can check files out as CRLF on Windows.
+{
+  const all = renderAll(sample);
+  for (const name of Object.keys(all).filter((n) => /^(stack|divider)-/.test(n))) {
+    const committed = readFileSync(new URL(`../assets/${name}`, import.meta.url), 'utf8').replace(/\r\n/g, '\n');
+    assert.strictEqual(committed, all[name], `assets/${name} is stale — re-run \`node scripts/render-all.mjs fixtures/sample-profile.json assets\` and commit the result`);
   }
-  console.log('SIGNS: PASS');
-}
-
-console.log('Task 1 tests complete');
-
-import { renderBanner } from './render-banner.mjs';
-
-{
-  const svg = renderBanner();
-
-  assert.ok(svg.startsWith('<svg'), 'output must be an SVG document');
-  assert.ok(svg.includes('</svg>'), 'output must be well-formed (closing tag present)');
-  assert.ok(!svg.includes('NaN'), 'no coordinate may be NaN');
-
-  const buildingRects = svg.match(/class="building"/g) || [];
-  assert.strictEqual(buildingRects.length, BUILDINGS.length, `expected ${BUILDINGS.length} building rects, got ${buildingRects.length}`);
-
-  const signRects = svg.match(/class="sign/g) || [];
-  assert.strictEqual(signRects.length, SIGNS.length, `expected ${SIGNS.length} sign rects, got ${signRects.length}`);
-
-  assert.ok(svg.includes('filter="url(#glow)"'), 'signs must use the glow-bloom filter');
-  assert.ok(svg.includes('class="walker"'), 'walking figure must be present');
-  assert.ok(svg.includes('MONISH'), 'name text must be present');
-  assert.ok(svg.includes('Full-stack developer building AI-enabled systems with agentic architectures.'), 'tagline text must be present');
-
-  console.log('renderBanner: PASS');
-}
-
-// assets/banner.svg must match what renderBanner() produces right now, or it has drifted
-// from the committed generator source.
-{
-  // Normalize line endings: git's autocrlf can check this file out as CRLF on Windows,
-  // while renderBanner() always produces LF - that's a checkout-environment difference,
-  // not real content drift.
-  const committed = readFileSync(new URL('../assets/banner.svg', import.meta.url), 'utf8').replace(/\r\n/g, '\n');
-  const fresh = renderBanner();
-  assert.strictEqual(committed, fresh, 'assets/banner.svg is stale — re-run `node scripts/render-banner.mjs assets/banner.svg` and commit the result');
   console.log('asset drift: PASS');
 }
 
-console.log('Task 2 tests complete');
+console.log('render tests complete');

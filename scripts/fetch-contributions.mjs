@@ -5,6 +5,11 @@ export function buildQuery() {
     query($username: String!) {
       user(login: $username) {
         contributionsCollection {
+          commitContributionsByRepository(maxRepositories: 10) {
+            contributions(first: 1, orderBy: {field: OCCURRED_AT, direction: DESC}) {
+              nodes { occurredAt }
+            }
+          }
           contributionCalendar {
             weeks {
               contributionDays {
@@ -28,6 +33,14 @@ export function parseResponse(json) {
     throw new Error('Unexpected GraphQL response shape: missing contributionCalendar.weeks');
   }
   return weeks.flatMap((week) => week.contributionDays);
+}
+
+// Timestamp of the newest commit across repos, or null. Only the time is read, never a repo name,
+// so private work can't leak into the generated assets.
+export function parseLastCommit(json) {
+  const repos = json?.data?.user?.contributionsCollection?.commitContributionsByRepository ?? [];
+  const times = repos.flatMap((r) => r?.contributions?.nodes ?? []).map((n) => n.occurredAt).filter(Boolean);
+  return times.length ? times.reduce((a, b) => (Date.parse(a) >= Date.parse(b) ? a : b)) : null;
 }
 
 async function main() {
@@ -54,7 +67,7 @@ async function main() {
 
   const json = await res.json();
   const days = parseResponse(json);
-  process.stdout.write(JSON.stringify(days));
+  process.stdout.write(JSON.stringify({ days, lastCommitAt: parseLastCommit(json) }));
 }
 
 if (import.meta.url === pathToFileURL(process.argv[1]).href) {

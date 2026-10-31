@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 48" role="img" aria-label="Rooftop skyline divider" shape-rendering="crispEdges"><style>
+.bl{animation:bl 3s steps(1) infinite}.b1{animation-delay:-1s}.b2{animation-delay:-2s}
+@keyframes bl{0%{opacity:1}60%{opacity:.15}70%{opacity:1}}
+.fl{animation:fl 6s steps(1) infinite}
+@keyframes fl{0%,100%{opacity:1}42%{opacity:1}43%{opacity:.25}45%{opacity:1}47%{opacity:.4}48%{opacity:1}}
+.rain{animation:fall linear infinite}
+@keyframes fall{to{transform:translateY(64px)}}
+.shim{animation:shim 4s ease-in-out infinite alternate}
+@keyframes shim{from{opacity:.1}to{opacity:.4}}
+.steam{animation:rise 3.2s ease-out infinite}
+@keyframes rise{from{transform:translateY(0);opacity:.6}to{transform:translateY(-40px);opacity:0}}
+.drift{animation:drift linear infinite}
+@keyframes drift{to{transform:translateX(-800px)}}
+.sweep{transform-origin:80px 196px;animation:sweep 10s ease-in-out infinite alternate}
+@keyframes sweep{from{transform:rotate(-9deg)}to{transform:rotate(11deg)}}
+.drone{animation:fly 38s linear infinite}
+@keyframes fly{from{transform:translateX(-40px)}to{transform:translateX(840px)}}
+.tail{transform-origin:488px 196px;animation:tail 3s ease-in-out infinite alternate}
+@keyframes tail{from{transform:rotate(-14deg)}to{transform:rotate(16deg)}}
+.eye{animation:blink 5s steps(1) infinite}
+@keyframes blink{0%,95%{opacity:1}96%,98%{opacity:0}99%,100%{opacity:1}}
+.ripple{fill:none;stroke-width:1.5;transform-box:fill-box;transform-origin:center;animation:rip 2.6s ease-out infinite}
+@keyframes rip{from{transform:scale(.2);opacity:.8}to{transform:scale(1);opacity:0}}
+.splash{animation:sp .9s steps(1) infinite}
+@keyframes sp{0%{opacity:.9}33%{opacity:0}}
+.flash,.bolt{opacity:0}
+.flash{animation:flash 13s linear infinite}.bolt{animation:bolt 13s linear infinite}
+@keyframes flash{0%,60%{opacity:0}61%{opacity:.5}62%{opacity:0}63%{opacity:.35}66%,100%{opacity:0}}
+@keyframes bolt{0%,60.5%{opacity:0}61%{opacity:1}62%{opacity:0}63%{opacity:.8}64.5%,100%{opacity:0}}
+@media (prefers-reduced-motion:reduce){
+.bl,.fl,.rain,.shim,.steam,.drift,.sweep,.drone,.tail,.eye,.ripple,.splash,.flash,.bolt{animation:none}
+.steam{opacity:0}.drone{transform:translateX(560px)}}
+</style><defs></defs><path d="M-8 40h28v8h-28zM20 24h20v24h-20zM44 12h40v36h-40zM88 16h28v32h-28zM116 36h24v12h-24zM140 32h40v16h-40zM180 12h36v36h-36zM220 36h28v12h-28zM252 16h20v32h-20zM272 12h32v36h-32zM308 16h36v32h-36zM344 40h32v8h-32zM376 32h24v16h-24zM400 32h20v16h-20zM424 40h24v8h-24zM448 40h28v8h-28zM476 40h28v8h-28zM504 32h32v16h-32zM540 40h40v8h-40zM584 20h32v28h-32zM620 28h32v20h-32zM652 36h20v12h-20zM672 40h16v8h-16zM688 20h24v28h-24zM712 36h36v12h-36zM752 32h28v16h-28zM780 40h20v8h-20z" fill="#c4cbe0"/><path d="M28 36h4v4h-4zM64 36h4v4h-4z" fill="#fff1b8"/><path d="M480 0h4v16h-4z" fill="#c4cbe0"/><rect class="bl" x="476" y="0" width="12" height="4" fill="#a35800"/><rect y="46" width="800" height="2" fill="#a35800" opacity=".45"/></svg>
