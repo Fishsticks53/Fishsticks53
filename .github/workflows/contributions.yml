@@ -36,6 +36,7 @@ jobs:
         run: |
           node scripts/fetch-contributions.test.mjs
           node scripts/render-banner.test.mjs
+          node scripts/render-scenes.test.mjs
 
       - name: Fetch contribution data
         env:
@@ -44,12 +45,12 @@ jobs:
         run: node scripts/fetch-contributions.mjs > /tmp/contributions.json
 
       - name: Render SVG assets
-        run: node scripts/render-all.mjs /tmp/contributions.json assets
+        run: node scripts/render-scenes.mjs /tmp/contributions.json assets
 
       - name: Commit if changed
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add assets/profile-dark.svg assets/profile-light.svg
+          git add assets/about-*.svg assets/activity-*.svg assets/stack-*.svg assets/portfolio-*.svg
           git diff --cached --quiet || git commit -m "chore: update profile assets"
           git push

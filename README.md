@@ -1,6 +1,4 @@
-<a href="https://fishsticks53.github.io/Portfolio/">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="./assets/profile-dark.svg">
-    <img src="./assets/profile-light.svg" alt="Pixel-art profile of a developer on a rainy rooftop. Full-stack developer building AI-enabled systems with agentic architectures. Tech stack: TypeScript, React, Python, FastAPI, PyTorch, LangChain. Select to visit the portfolio." width="100%">
-  </picture>
-</a>
+<a href="https://fishsticks53.github.io/Portfolio/"><picture><source media="(prefers-color-scheme: dark)" srcset="./assets/about-dark.svg"><img src="./assets/about-light.svg" alt="A cozy high-rise apartment where a developer types at a desk and a cat roams the balcony in the rain. Full-stack developer building AI-enabled systems with agentic architectures." width="100%"></picture></a>
+<a href="https://github.com/Fishsticks53"><picture><source media="(prefers-color-scheme: dark)" srcset="./assets/activity-dark.svg"><img src="./assets/activity-light.svg" alt="Skyline of the last 30 days of GitHub contributions, one building per day." width="100%"></picture></a>
+<a href="https://github.com/Fishsticks53?tab=repositories"><picture><source media="(prefers-color-scheme: dark)" srcset="./assets/stack-dark.svg"><img src="./assets/stack-light.svg" alt="Server hall with racks labelled TypeScript, React, Python, FastAPI, PyTorch and LangChain." width="100%"></picture></a>
+<a href="https://fishsticks53.github.io/Portfolio/"><picture><source media="(prefers-color-scheme: dark)" srcset="./assets/portfolio-dark.svg"><img src="./assets/portfolio-light.svg" alt="A vault door under a neon portfolio sign. Select to visit the portfolio." width="100%"></picture></a>
