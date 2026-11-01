@@ -35,7 +35,6 @@ jobs:
       - name: Run self-tests (must pass before touching the live asset)
         run: |
           node scripts/fetch-contributions.test.mjs
-          node scripts/render-banner.test.mjs
           node scripts/render-scenes.test.mjs
 
       - name: Fetch contribution data

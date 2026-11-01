@@ -2,7 +2,7 @@ import { readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { pathToFileURL } from 'node:url';
 import { rng, px } from './pixel.mjs';
-import { commits30, streak, agoLabel, bucketLevels } from './render-panels.mjs';
+import { commits30, streak, agoLabel, bucketLevels } from './stats.mjs';
 
 // Port of the "Rooftop to underground" design: four stacked 800px-wide scenes, each its own SVG so
 // each can carry its own README link. GitHub blocks web fonts inside images, so all text is drawn
