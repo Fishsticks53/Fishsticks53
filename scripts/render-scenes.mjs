@@ -57,7 +57,48 @@ const T = (x, y, s, txt, f = 'var(--ink)', a = 'start', ex = '') => {
   return `<path transform="translate(${+x0.toFixed(1)} ${+(y - 7 * u).toFixed(1)})" d="${px(u).letters(str, 0, 0, 1).join('')}" style="fill:${f}${ex}"/>`;
 };
 const plate = (title) => `<g>${R(20, 18, Math.round(textW(18, title)) + 28, 34, 'var(--plate)', '', '; stroke:var(--cy);stroke-width:2')}${T(34, 42, 18, title, 'var(--cy)')}</g>`;
-const svg = (mode, h, label, inner) => `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 ${h}" role="img" aria-label="${label}" shape-rendering="crispEdges"><style>svg{${PAL[mode].replace(/\n/g, '')}}${ANIM}</style>${inner}</svg>\n`;
+// Size pass, visually lossless: resolve var() to literal colours, turn paint declarations into
+// attributes (animation-* and filter stay in style), and merge runs of plain opaque rects with the
+// same fill into one path. Opaque only: overlapping translucent rects would blend differently.
+const PAINT = new Set(['fill', 'opacity', 'fill-opacity', 'stroke', 'stroke-width', 'stop-color', 'stop-opacity']);
+function slim(inner, mode) {
+  const vars = Object.fromEntries(PAL[mode].split(';').map((d) => d.trim().split(/:(.+)/)).filter((p) => p[1]));
+  const lit = (s) => s.replace(/var\((--[\w-]+)\)/g, (_, n) => vars[n]);
+  const tags = inner.replace(/ style="([^"]*)"/g, (_, css) => {
+    const keep = [];
+    let attrs = '';
+    for (const decl of css.split(';')) {
+      const i = decl.indexOf(':');
+      if (i < 0) continue;
+      const k = decl.slice(0, i).trim(), v = lit(decl.slice(i + 1).trim());
+      if (PAINT.has(k)) attrs += ` ${k}="${v}"`; else keep.push(`${k}:${v}`);
+    }
+    return attrs + (keep.length ? ` style="${keep.join(';')}"` : '');
+  }).match(/<[^>]*>/g);
+  const plain = /^<rect x="([^"]+)" y="([^"]+)" width="([^"]+)" height="([^"]+)" fill="([^"]+)"(?: opacity="([^"]+)")?\/>$/;
+  const hit = (a, b) => a.x < b.x + b.w && b.x < a.x + a.w && a.y < b.y + b.h && b.y < a.y + a.h;
+  let out = '', key = null, run = [];
+  const flush = () => {
+    if (run.length) {
+      const [fill, op] = key.split('|');
+      let px = 0, py = 0;
+      const d = run.map((r, i) => { const s = `${i ? 'm' : 'M'}${+(r.x - px).toFixed(3)} ${+(r.y - py).toFixed(3)}h${r.w}v${r.h}h-${r.w}z`; px = r.x; py = r.y; return s; }).join('');
+      out += `<path fill="${fill}"${op ? ` opacity="${op}"` : ''} d="${d}"/>`;
+    }
+    run = []; key = null;
+  };
+  for (const t of tags) {
+    const m = plain.exec(t);
+    if (!m) { flush(); out += t; continue; }
+    const r = { x: +m[1], y: +m[2], w: +m[3], h: +m[4] }, k = `${m[5]}|${m[6] || ''}`;
+    // Translucent rects blend where they overlap, a merged path would not, so only merge disjoint ones.
+    if (k !== key || (m[6] && run.some((o) => hit(o, r)))) { flush(); key = k; }
+    run.push(r);
+  }
+  flush();
+  return out;
+}
+const svg = (mode, h, label, inner) => `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 ${h}" role="img" aria-label="${label}" shape-rendering="crispEdges"><style>${ANIM}</style>${slim(inner, mode)}</svg>\n`;
 const bg = (id, a, b, h) => `<defs><linearGradient id="${id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" style="stop-color:var(${a})"/><stop offset="1" style="stop-color:var(${b})"/></linearGradient></defs><rect width="800" height="${h}" fill="url(#${id})"/>`;
 function rain(seed, n, xmax = 800) {
   const r = rng(seed);
