@@ -23,11 +23,9 @@ export function agoLabel(iso, now = Date.now()) {
   return h < 48 ? `${h}H AGO` : `${Math.floor(h / 24)}D AGO`;
 }
 
-// Quartile buckets over the non-zero days; zero stays level 0.
+// Colour levels for the skyline: 1-2 / 3-4 / 5-6 / 7+ contributions map to levels 1..4 (zero stays level 0). The
+// bands stretch only when a day exceeds the 11 the building height saturates at, so a very busy month keeps contrast.
 export function bucketLevels(counts) {
-  const positives = counts.filter((c) => c > 0).sort((a, b) => a - b);
-  if (positives.length === 0) return counts.map(() => 0);
-  const q = (p) => positives[Math.min(positives.length - 1, Math.floor(p * (positives.length - 1)))];
-  const t = [q(0.25), q(0.5), q(0.75)];
-  return counts.map((c) => (c <= 0 ? 0 : c <= t[0] ? 1 : c <= t[1] ? 2 : c <= t[2] ? 3 : 4));
+  const k = Math.max(11, ...counts) / 11;
+  return counts.map((c) => (c <= 0 ? 0 : c <= 2 * k ? 1 : c <= 4 * k ? 2 : c <= 6 * k ? 3 : 4));
 }

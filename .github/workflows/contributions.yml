@@ -7,7 +7,7 @@
 #   2. Add it to this repo at Settings -> Secrets and variables -> Actions,
 #      as a secret named PROFILE_TOKEN.
 # Without this secret, the "Fetch contribution data" step below will fail
-# and the profile picture (assets/profile-*.svg) will not update.
+# and the activity scene (assets/activity-*.svg) will not update.
 name: Update profile assets
 
 on:
@@ -35,6 +35,7 @@ jobs:
       - name: Run self-tests (must pass before touching the live asset)
         run: |
           node scripts/fetch-contributions.test.mjs
+          node scripts/optimize.test.mjs
           node scripts/render-scenes.test.mjs
 
       - name: Fetch contribution data
