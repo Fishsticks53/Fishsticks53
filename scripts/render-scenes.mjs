@@ -12,13 +12,13 @@ const NAMES = ['TYPESCRIPT', 'REACT', 'PYTHON', 'FASTAPI', 'PYTORCH', 'LANGCHAIN
 
 // Scene palettes, exposed to the SVGs as CSS variables (the design reads them via var()).
 const PAL = {
-  dark: `--s1a:#070a1a;--s1b:#121836;--bld:#0f1431;--bld2:#171e45;--win:#ffcf70;--roof:#161d40;--roof2:#202852;--ink:#e8eaff;--ink2:#9aa2c8;--acc:#ffb347;--cy:#4de1ff;--mg:#ff4fa3;--rain:#7da6ff;--cat:#4a5390;--hood:#5b3fa6;--skin:#e8b48f;--desk:#2a2f58;--scr:#06222f;--warm:#ffb347;--room:#2a1c2e;--room2:#1b1226;--jacket:#e4384e;--wood:#6b4630;--leaf:#2a9d78;--sofa:#a23a6a;
+  dark: `--s1a:#070a1a;--s1b:#121836;--bld:#0f1431;--bld2:#171e45;--win:#ffcf70;--roof:#161d40;--roof2:#202852;--ink:#e8eaff;--ink2:#9aa2c8;--acc:#ffb347;--cy:#4de1ff;--mg:#ff4fa3;--rain:#7da6ff;--cat:#4a5390;--hood:#5b3fa6;--skin:#e8b48f;--desk:#2a2f58;--scr:#06222f;--warm:#ffb347;--room:#2a1c2e;--room2:#1b1226;--jacket:#e4384e;--wood:#6b4630;--leaf:#2a9d78;--sofa:#a23a6a;--hair:#0b0d16;--haz:#ffb347;--chrome:#c5d2ec;
 --s2a:#121836;--s2b:#0b0e22;--tile:#151b3f;--tilebd:#262d5c;--shade:#02030a;--lv0:#1c2347;--lv1:#1f5a73;--lv2:#1fa0b8;--lv3:#4de1ff;--lv4:#ff0267;
---s3a:#0b0e22;--s3b:#080a18;--ceil:#11163a;--pipe:#2b3366;--rack:#121733;--rackbd:#2d3566;--slot:#0a0d22;--plate:#0b0e22;--cable:#3a4488;--train:#1d2450;--track:#343c78;
+--s3a:#0b0e22;--s3b:#080a18;--ceil:#11163a;--pipe:#2b3366;--rack:#121733;--rackbd:#2d3566;--slot:#0a0d22;--plate:#0b0e22;--cable:#3a4488;--train:#1a2146;--track:#343c78;
 --s4a:#080a18;--s4b:#04050d;--wall:#10142e;--door:#1b2250;--doorrim:#3a447f;--floor:#0e1230`,
-  light: `--s1a:#cfd6ee;--s1b:#aeb8de;--bld:#98a3cf;--bld2:#8995c4;--win:#e08a1a;--roof:#8793c4;--roof2:#6f7cb2;--ink:#14172b;--ink2:#3d4468;--acc:#b85f00;--cy:#0a7f9a;--mg:#c4237a;--rain:#4f6fd1;--cat:#2a2f58;--hood:#6a4cc0;--skin:#e0a57f;--desk:#5a65a0;--scr:#06222f;--warm:#e08a1a;--room:#e3d2d9;--room2:#cdb9c4;--jacket:#d02f45;--wood:#9b6b48;--leaf:#2f8a5f;--sofa:#b94a7e;
+  light: `--s1a:#cfd6ee;--s1b:#aeb8de;--bld:#98a3cf;--bld2:#8995c4;--win:#e08a1a;--roof:#8793c4;--roof2:#6f7cb2;--ink:#14172b;--ink2:#3d4468;--acc:#b85f00;--cy:#0a7f9a;--mg:#c4237a;--rain:#4f6fd1;--cat:#2a2f58;--hood:#6a4cc0;--skin:#e0a57f;--desk:#5a65a0;--scr:#06222f;--warm:#e08a1a;--room:#e3d2d9;--room2:#cdb9c4;--jacket:#d02f45;--wood:#9b6b48;--leaf:#2f8a5f;--sofa:#b94a7e;--hair:#0b0d16;--haz:#b85f00;--chrome:#7d89ab;
 --s2a:#aeb8de;--s2b:#9aa5d2;--tile:#b7c0e3;--tilebd:#98a3cf;--shade:#0b1030;--lv0:#c9d0ea;--lv1:#9dd3e0;--lv2:#5bbfd4;--lv3:#1e9bb8;--lv4:#ff0267;
---s3a:#9aa5d2;--s3b:#7f8bbd;--ceil:#6d79ae;--pipe:#8a96c8;--rack:#aab4dc;--rackbd:#6d79ae;--slot:#4a5486;--plate:#dfe4f5;--cable:#4a5486;--train:#55609a;--track:#5d6aa8;
+--s3a:#9aa5d2;--s3b:#7f8bbd;--ceil:#6d79ae;--pipe:#8a96c8;--rack:#aab4dc;--rackbd:#6d79ae;--slot:#4a5486;--plate:#dfe4f5;--cable:#4a5486;--train:#4c578a;--track:#5d6aa8;
 --s4a:#7f8bbd;--s4b:#5d689b;--wall:#6d79ae;--door:#8a96c8;--doorrim:#4a5486;--floor:#5d689b`,
 };
 
@@ -228,14 +228,17 @@ function s1(mode) {
   o += R(526, 278, 6, 4, 'var(--win)', 'tw') + R(560, 246, 4, 4, 'var(--win)', 'tw', '; animation-delay:-1s') + R(530, 252, 2, 10, 'var(--rain)', '', '; opacity:.4');
   o += R(612, 228, 34, 24, 'var(--roof2)') + R(615, 231, 28, 18, 'var(--mg)', '', '; opacity:.8') + R(622, 238, 14, 10, 'var(--cy)', '', '; opacity:.8') + R(656, 232, 22, 18, 'var(--roof2)') + R(659, 235, 16, 12, 'var(--acc)', '', '; opacity:.8');
   o += R(596, 300, 84, 6, 'var(--desk)') + R(600, 306, 5, 34, 'var(--desk)') + R(648, 306, 5, 34, 'var(--desk)');
+  o += R(572, 246, 32, 52, 'var(--roof2)') + R(574, 248, 28, 48, 'var(--scr)') + R(576, 252, 16, 2, 'var(--cy)') + R(576, 257, 22, 2, 'var(--acc)') + R(576, 262, 12, 2, 'var(--mg)') + R(576, 268, 20, 2, 'var(--leaf)') + R(576, 274, 18, 2, 'var(--cy)') + R(576, 280, 24, 2, 'var(--acc)') + R(586, 298, 4, 4, 'var(--desk)');
   let code = '';
   const cr = rng(3);
   for (let i = 0; i < 14; i++) { const ind = (i % 3) * 6, w = 8 + Math.floor(cr() * 26); code += R(624 + ind, 262 + i * 6, w, 3, ['var(--cy)', 'var(--acc)', 'var(--mg)', 'var(--ink2)'][i % 4]); }
   o += `<clipPath id="scr"><rect x="620" y="258" width="46" height="36"/></clipPath><g transform="translate(322 150) scale(.5)">${R(616, 296, 54, 4, 'var(--roof2)') + R(618, 256, 50, 40, 'var(--roof2)') + R(620, 258, 46, 36, 'var(--scr)')}<g clip-path="url(#scr)"><g class="code">${code}</g></g>${R(620, 258, 46, 36, 'var(--cy)', 'pulse', '; opacity:.08')}</g>`;
   o += R(604, 292, 9, 8, 'var(--ink)') + R(606, 286, 2, 4, 'var(--ink2)', 'steam', '; opacity:.5');
+  o += R(648, 299, 44, 4, 'var(--shade)') + R(650, 300, 40, 2, 'var(--cy)', 'pulse', '; opacity:.7');
   o += R(702, 292, 6, 28, 'var(--desk)') + R(676, 316, 32, 5, 'var(--desk)') + R(689, 321, 4, 19, 'var(--desk)') + R(680, 338, 22, 3, 'var(--desk)');
   o += R(686, 290, 14, 26, 'var(--jacket)') + R(696, 284, 8, 12, 'var(--jacket)');
-  o += R(687, 276, 12, 14, 'var(--skin)') + R(686, 274, 14, 5, 'var(--ink)') + R(696, 276, 5, 9, 'var(--ink)') + R(688, 281, 5, 2, 'var(--cy)');
+  o += R(687, 276, 12, 14, 'var(--skin)') + R(686, 273, 14, 6, 'var(--hair)') + R(696, 275, 6, 10, 'var(--hair)') + R(684, 275, 4, 6, 'var(--hair)') + R(688, 281, 5, 2, 'var(--cy)');
+  o += R(684, 284, 18, 3, 'var(--cy)') + R(682, 282, 3, 7, 'var(--hood)') + R(700, 282, 3, 7, 'var(--hood)');
   o += R(666, 314, 28, 6, 'var(--ink2)', '', '; opacity:.75') + R(664, 320, 6, 18, 'var(--ink2)', '', '; opacity:.75') + R(658, 336, 12, 4, 'var(--ink)');
   o += `<g class="type">${R(688, 292, 6, 10, 'var(--jacket)')}${R(656, 296, 34, 5, 'var(--jacket)')}${R(652, 296, 5, 5, 'var(--skin)')}</g>`;
   o += `<g class="type2">${R(660, 298, 30, 4, 'var(--jacket)', '', '; opacity:.8')}${R(656, 298, 4, 4, 'var(--skin)')}</g>`;
@@ -252,8 +255,13 @@ function s1(mode) {
   o += R(738, 396, 50, 34, 'var(--roof2)') + R(741, 399, 44, 28, 'var(--scr)') + R(741, 399, 44, 28, 'var(--cy)', 'fl', '; opacity:.25') + R(758, 430, 10, 6, 'var(--roof2)');
   o += R(470, 368, 34, 22, 'var(--roof2)') + R(473, 371, 28, 16, 'var(--hood)', '', '; opacity:.8');
   o += plate('ABOUT ME');
-  o += T(24, 84, 13, 'full-stack developer', 'var(--ink)');
-  o += T(24, 102, 12, 'building AI-enabled systems with agentic architectures', 'var(--ink2)');
+  o += T(26, 82, 22, 'MONISH', 'var(--shade)', 'start', '; opacity:.75');
+  o += T(24, 80, 22, 'MONISH', 'var(--ink)');
+  o += T(24, 102, 12, 'SYSTEMS & AI ENGINEER', 'var(--acc)');
+  o += T(24, 120, 11, 'AGENTIC ARCHITECTURES - HIGH CONCURRENCY', 'var(--ink2)');
+  o += R(24, 130, 190, 20, 'var(--plate)', '', '; stroke:var(--tilebd);stroke-width:1')
+    + R(32, 137, 6, 6, '#2fd6a0', 'pulse')
+    + T(44, 144, 9, 'ACTIVE - BUILDING SYSTEMS', 'var(--ink)');
   return svg(mode, H, 'A cozy high-rise apartment. A developer types at a desk inside while a cat roams the balcony, which has string lights, plants, a table and a chair and looks out over the skyscrapers in the rain. About me: full-stack developer building AI-enabled systems with agentic architectures. Select to visit the portfolio.', o);
 }
 
@@ -343,9 +351,15 @@ function s2(mode, days, stats) {
   o += T(792, base + 78, 10, 'TODAY', 'var(--acc)', 'end');
   o += rain(33, 24);
   o += plate('ACTIVITY');
-  o += R(20, 64, 262, 64, 'var(--plate)', '', '; stroke:var(--tilebd);stroke-width:2')
-    + T(32, 84, 13, 'NOW', 'var(--acc)') + T(32, 102, 12, `last commit ${stats.ago}`, 'var(--ink)')
-    + T(32, 119, 12, `${total} contributions - ${streakN} day streak`, 'var(--ink2)');
+  o += R(20, 62, 280, 70, 'var(--plate)', '', '; stroke:var(--tilebd);stroke-width:1.5')
+    + R(18, 60, 8, 2, 'var(--cy)') + R(18, 60, 2, 8, 'var(--cy)')
+    + R(294, 60, 8, 2, 'var(--cy)') + R(300, 60, 2, 8, 'var(--cy)')
+    + R(18, 130, 8, 2, 'var(--cy)') + R(18, 124, 2, 8, 'var(--cy)')
+    + R(294, 130, 8, 2, 'var(--cy)') + R(300, 124, 2, 8, 'var(--cy)')
+    + R(32, 74, 6, 6, '#2fd6a0', 'pulse')
+    + T(44, 80, 10, 'ACTIVITY TELEMETRY', 'var(--cy)')
+    + T(32, 98, 12, `last commit ${stats.ago}`, 'var(--ink)')
+    + T(32, 117, 11, `${total} contributions - ${streakN} day streak`, 'var(--acc)');
   o += T(10, base + 92, 11, 'last 30 days. taller and brighter means more contributions', 'var(--ink2)');
   return svg(mode, H, `Skyline of the last 30 days of contributions, one building per day from left to right, ${total} in total, ${streakN} day streak, last commit ${stats.ago.toLowerCase()}. Taller, brighter buildings are busier days. Select to view the contribution graph.`, o);
 }
@@ -393,19 +407,48 @@ function s3(mode) {
   for (let x = -10; x < 810; x += 26) o += P(`${x},392 ${x + 16},392 ${x + 14},410 ${x - 2},410`, 'var(--rackbd)', '.6');
   o += R(0, 391, 800, 3, 'var(--track)') + R(0, 409, 800, 4, 'var(--track)') + R(0, 409, 800, 1, '#fff', '', '; opacity:.2');
   let tr = '';
-  const cw = 170, gp = 6;
+  const cw = 170, gp = 8;
   for (let c = 0; c < 3; c++) {
-    const x = c * (cw + gp), lastCar = c === 2;
-    tr += B3(x, 368, cw, 34, 12, 6, 'var(--train)') + R(x, 386, cw, 4, 'var(--acc)');
-    for (let k = 0; k < 6; k++) tr += R(x + 10 + k * 26, 373, 18, 11, 'var(--shade)') + R(x + 11 + k * 26, 374, 16, 9, 'var(--win)', '', '; opacity:.9');
-    tr += R(x, 398, cw, 4, 'var(--shade)', '', '; opacity:.5') + R(x + 14, 402, 34, 5, 'var(--shade)') + R(x + cw - 48, 402, 34, 5, 'var(--shade)');
-    for (const wx of [18, 36, cw - 44, cw - 26]) tr += R(x + wx, 405, 7, 6, 'var(--ink2)');
-    tr += R(x + cw, 390, gp, 4, 'var(--ink2)');
-    if (c === 1) tr += R(x + 82, 354, 2, 10, 'var(--ink2)') + R(x + 66, 352, 34, 2, 'var(--ink2)');
-    if (lastCar) tr += R(x + cw + 3, 384, 6, 8, 'var(--cy)') + `<ellipse cx="${x + cw + 50}" cy="392" rx="52" ry="9" style="fill:var(--cy);opacity:.16"/>`;
+    const x = c * (cw + gp), isFront = c === 2, isMid = c === 1, isRear = c === 0;
+    tr += B3(x, 368, cw, 34, 12, 6, 'var(--train)');
+    tr += R(x, 368, cw, 10, 'var(--pipe)') + R(x, 378, cw, 3, 'var(--acc)') + R(x, 381, cw, 1, 'var(--cy)') + R(x, 396, cw, 6, 'var(--shade)');
+    tr += R(x + 18, 363, 30, 5, 'var(--pipe)') + R(x + 20, 364, 26, 2, 'var(--shade)') + R(x + cw - 48, 363, 30, 5, 'var(--pipe)') + R(x + cw - 46, 364, 26, 2, 'var(--shade)');
+    for (const dx of [x + 14, x + cw - 32]) {
+      tr += R(dx, 371, 14, 27, 'var(--shade)') + R(dx + 2, 373, 4, 16, 'var(--win)', '', '; opacity:.85') + R(dx + 8, 373, 4, 16, 'var(--win)', '', '; opacity:.85') + R(dx + 6, 370, 2, 2, '#ff3b3b');
+    }
+    for (let k = 0; k < 4; k++) {
+      const wx = x + 34 + k * 20;
+      tr += R(wx, 373, 14, 13, 'var(--shade)') + R(wx + 1, 374, 12, 11, 'var(--win)', '', '; opacity:.9');
+      if (k % 2 === 0) tr += R(wx + 3, 379, 6, 6, 'var(--shade)');
+    }
+    for (const bx of [x + 8, x + cw - 36]) {
+      tr += R(bx, 401, 28, 4, 'var(--pipe)') + R(bx + 2, 403, 7, 5, 'var(--shade)') + R(bx + 19, 403, 7, 5, 'var(--shade)') + R(bx + 11, 400, 6, 3, 'var(--acc)');
+    }
+    tr += R(x + 38, 401, cw - 76, 5, 'var(--slot)') + R(x + 40, 402, cw - 80, 2, 'var(--pipe)');
+    if (isMid) {
+      tr += P(`${x + 72},368 ${x + 82},352 ${x + 85},352 ${x + 75},368`, 'var(--pipe)') + P(`${x + 98},368 ${x + 88},352 ${x + 85},352 ${x + 95},368`, 'var(--pipe)') + R(x + 76, 350, 18, 2, 'var(--acc)') + R(x + 84, 348, 3, 3, 'var(--cy)', 'fl');
+    }
+    if (isRear) {
+      tr += R(x - 3, 381, 3, 5, '#ff2244', 'pulse') + R(x - 3, 391, 3, 5, '#ff2244', 'pulse') + `<ellipse cx="${x - 10}" cy="387" rx="14" ry="10" style="fill:#ff2244;opacity:.25"/>`;
+    }
+    if (isFront) {
+      const nx = x + cw;
+      tr += P(`${nx},368 ${nx + 20},382 ${nx + 20},402 ${nx},402`, 'var(--train)') + P(`${nx},368 ${nx + 20},382 ${nx + 30},376 ${nx + 10},362`, 'var(--pipe)')
+        + P(`${nx + 2},371 ${nx + 15},381 ${nx + 15},388 ${nx + 2},388`, 'var(--scr)') + P(`${nx + 4},373 ${nx + 13},381 ${nx + 13},384 ${nx + 4},384`, 'var(--cy)', '.5')
+        + R(nx + 5, 385, 3, 2, '#2fd6a0') + R(nx + 10, 385, 3, 2, 'var(--acc)')
+        + R(nx + 17, 388, 3, 5, '#ffffff') + R(nx + 17, 396, 3, 4, 'var(--cy)')
+        + `<polygon points="${nx + 20},388 ${nx + 150},352 ${nx + 170},424 ${nx + 20},404" style="fill:var(--cy);opacity:.22"/>`
+        + `<polygon points="${nx + 20},390 ${nx + 90},372 ${nx + 100},416 ${nx + 20},400" style="fill:#ffffff;opacity:.32"/>`;
+    } else {
+      for (let g = 0; g < gp; g += 2) tr += R(x + cw + g, 372, 1.5, 26, 'var(--shade)');
+    }
   }
   o += `<g class="drift" style="animation-duration:12s">${tr}</g>`;
   o += plate('TECH STACK');
+  o += R(180, 18, 300, 34, 'var(--plate)', '', '; stroke:var(--rackbd);stroke-width:1')
+    + R(192, 31, 8, 8, '#2fd6a0', 'pulse')
+    + T(208, 38, 10, 'HIGH-CONCURRENCY INFRASTRUCTURE', 'var(--cy)')
+    + T(208, 48, 8, 'AGENTIC PIPELINES - NEURAL INFERENCE', 'var(--ink2)');
   return svg(mode, H, `A server hall drawn in 2.5D with racks labelled ${NAMES.join(', ')}, and a train passing below. Select to see my repositories.`, o);
 }
 
@@ -426,19 +469,48 @@ function s4(mode) {
   o += R(0, 310, 800, 1, 'var(--rackbd)', '', '; opacity:.35') + R(0, 322, 800, 1, 'var(--rackbd)', '', '; opacity:.35');
   o += R(0, 338, 800, 16, 'var(--doorrim)') + R(0, 338, 800, 2, 'var(--cy)', '', '; opacity:.5') + R(0, 354, 800, 36, 'var(--s4b)');
   for (let i = 0; i < 40; i++) o += P(`${i * 20},341 ${i * 20 + 10},341 ${i * 20 + 4},352 ${i * 20 - 6},352`, 'var(--acc)', '.55');
+  [130, 246].forEach((hy) => {
+    o += B3(266, hy, 36, 24, 10, 6, 'var(--pipe)')
+      + R(278, hy + 5, 14, 14, 'var(--chrome)')
+      + R(276, hy + 9, 18, 6, 'var(--doorrim)')
+      + R(262, hy - 3, 6, 30, 'var(--doorrim)');
+    for (let b = 0; b < 3; b++) o += R(263, hy + b * 9, 4, 3, '#fff', '', '; opacity:.4');
+  });
   o += B3(296, 96, 208, 204, 14, 8, 'var(--doorrim)') + R(304, 104, 192, 196, 'var(--shade)', '', '; opacity:.85');
   o += P(`${cx + 88},112 ${cx + 100},105 ${cx + 100},293 ${cx + 88},300 ${cx + 60},338 ${cx + 210},338`, 'var(--acc)', '.10', 'pulse');
   o += B3(312, 112, 176, 188, 12, 7, 'var(--door)');
-  for (let a = 0; a < 360; a += 30) { const rad = a * Math.PI / 180, bx = Math.round(cx + Math.cos(rad) * 74 - 4), by = Math.round(cy + Math.sin(rad) * 74 - 4); o += R(bx, by, 8, 8, 'var(--doorrim)') + R(bx + 2, by + 2, 3, 3, '#fff', '', '; opacity:.3'); }
+  for (let a = 0; a < 360; a += 22.5) {
+    const rad = a * Math.PI / 180, bx = Math.round(cx + Math.cos(rad) * 78 - 4), by = Math.round(cy + Math.sin(rad) * 78 - 4);
+    o += R(bx, by, 8, 8, 'var(--chrome)') + R(bx + 1, by + 1, 6, 2, '#fff', '', '; opacity:.6');
+  }
+  for (let a = 0; a < 360; a += 15) {
+    const rad = a * Math.PI / 180, gx = Math.round(cx + Math.cos(rad) * 64 - 2), gy = Math.round(cy + Math.sin(rad) * 64 - 2);
+    o += R(gx, gy, 4, 4, 'var(--doorrim)') + R(gx + 1, gy + 1, 2, 2, 'var(--acc)', '', '; opacity:.5');
+  }
+  o += R(cx - 36, cy - 40, 18, 18, 'var(--doorrim)') + R(cx - 34, cy - 38, 14, 14, 'var(--shade)') + R(cx - 32, cy - 36, 10, 5, 'var(--haz)') + R(cx - 28, cy - 35, 2, 8, '#ff3b3b');
+  o += R(cx + 18, cy - 40, 18, 18, 'var(--doorrim)') + R(cx + 20, cy - 38, 14, 14, 'var(--shade)') + R(cx + 22, cy - 36, 10, 5, '#2fd6a0') + R(cx + 26, cy - 35, 2, 8, '#2fd6a0');
+  o += R(cx - 48, cy - 58, 96, 12, 'var(--plate)', '', '; stroke:var(--doorrim);stroke-width:1') + T(cx, cy - 50, 8, 'SEAL: ARMED - 100%', 'var(--acc)', 'middle');
   o += R(cx - 56, cy - 56, 112, 112, 'var(--shade)', '', '; opacity:.3');
-  o += `<g class="spin">${R(cx - 4, cy - 50, 8, 100, 'var(--cy)')}${R(cx - 50, cy - 4, 100, 8, 'var(--cy)')}<polygon points="${cx - 36},${cy - 36} ${cx - 28},${cy - 36} ${cx + 36},${cy + 36} ${cx + 28},${cy + 36}" style="fill:var(--cy)"/><polygon points="${cx + 36},${cy - 36} ${cx + 28},${cy - 36} ${cx - 36},${cy + 36} ${cx - 28},${cy + 36}" style="fill:var(--cy)"/></g>`;
+  let spokes = '';
+  for (let s = 0; s < 3; s++) {
+    const ang = s * 60;
+    spokes += `<rect x="${cx - 3}" y="${cy - 48}" width="6" height="96" transform="rotate(${ang} ${cx} ${cy})" fill="var(--cy)"/>`;
+    spokes += `<rect x="${cx - 5}" y="${cy - 50}" width="10" height="6" transform="rotate(${ang} ${cx} ${cy})" fill="var(--chrome)"/>`;
+    spokes += `<rect x="${cx - 5}" y="${cy + 44}" width="10" height="6" transform="rotate(${ang} ${cx} ${cy})" fill="var(--chrome)"/>`;
+  }
+  o += `<g class="spin">${spokes}<circle cx="${cx}" cy="${cy}" r="34" fill="none" stroke="var(--cy)" stroke-width="4"/><circle cx="${cx}" cy="${cy}" r="14" fill="var(--doorrim)" stroke="var(--chrome)" stroke-width="2"/><circle cx="${cx}" cy="${cy}" r="4" fill="var(--acc)"/></g>`;
   o += R(cx - 12, cy - 12, 24, 24, 'var(--plate)', '', '; stroke:var(--cy);stroke-width:3');
   o += P(`${cx + 88},112 ${cx + 100},105 ${cx + 100},293 ${cx + 88},300`, 'var(--acc)', '.55', 'pulse');
-  o += B3(270, 318, 260, 20, 12, 7, 'var(--door)') + R(280, 324, 240, 2, 'var(--shade)', '', '; opacity:.3');
+  o += B3(266, 318, 268, 20, 12, 7, 'var(--door)') + R(274, 324, 252, 2, 'var(--shade)', '', '; opacity:.3');
+  for (let i = 0; i < 17; i++) {
+    const hx = 270 + i * 16;
+    o += P(`${hx},320 ${hx + 8},320 ${hx},336 ${hx - 8},336`, 'var(--haz)', '.85');
+  }
   o += R(cx - 110, 310, 220, 10, 'var(--mg)', '', '; opacity:.08');
-  o += B3(540, 186, 34, 56, 6, 4, 'var(--plate)') + R(546, 192, 22, 8, 'var(--scr)') + R(548, 194, 10, 4, 'var(--cy)', 'pulse');
-  for (let k = 0; k < 6; k++) o += R(547 + (k % 3) * 8, 206 + Math.floor(k / 3) * 10, 6, 6, 'var(--doorrim)');
-  o += R(566, 232, 4, 4, '#2fd6a0', 'tw');
+  o += B3(540, 178, 38, 66, 6, 4, 'var(--plate)') + R(544, 184, 30, 10, 'var(--scr)') + R(546, 187, 18, 4, '#2fd6a0', 'pulse') + R(544, 198, 30, 20, 'var(--scr)');
+  o += R(548, 201, 22, 14, '#2fd6a0', '', '; opacity:.3') + R(546, 206, 26, 2, '#2fd6a0', 'pulse');
+  for (let k = 0; k < 6; k++) o += R(546 + (k % 3) * 9, 222 + Math.floor(k / 3) * 9, 6, 6, 'var(--doorrim)');
+  o += R(568, 240, 6, 6, '#2fd6a0', 'tw');
   o += R(40, 60, 8, 66, 'var(--pipe)') + R(41, 60, 2, 66, '#fff', '', '; opacity:.18') + R(34, 116, 20, 8, 'var(--doorrim)') + R(36, 126, 16, 6, 'var(--mg)') + R(40, 122, 8, 12, 'var(--mg)');
   o += B3(84, 92, 34, 34, 5, 3, 'var(--plate)') + R(88, 96, 26, 26, 'var(--scr)') + R(100, 108, 2, 12, 'var(--acc)', 'pulse') + R(96, 106, 10, 2, 'var(--cy)', '', '; opacity:.5');
   o += R(98, 126, 6, 22, 'var(--pipe)') + R(60, 144, 82, 6, 'var(--pipe)') + R(60, 145, 82, 1, '#fff', '', '; opacity:.18');
